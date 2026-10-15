@@ -69,5 +69,26 @@ ssh $SERVER "sudo certbot --nginx -d $DOMAIN -d www.$DOMAIN \
   --non-interactive --agree-tos --email admin@$DOMAIN --redirect 2>&1 \
   || echo '⚠️  Certbot skipped (cert may already exist)'"
 
+# Cloudflare cache purge — makes updates visible instantly
+echo "☁️  Purging Cloudflare cache..."
+if [ -f ~/.streamtrik-env ]; then
+  source ~/.streamtrik-env
+  if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ZONE_ID" ]; then
+    RESULT=$(curl -s -X POST "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" \
+      -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+      -H "Content-Type: application/json" \
+      -d '{"purge_everything":true}' | python3 -c "import json,sys;print(json.load(sys.stdin).get('success'))")
+    if [ "$RESULT" = "True" ]; then
+      echo "✅ Cloudflare cache purged"
+    else
+      echo "⚠️  CF purge failed (not critical)"
+    fi
+  else
+    echo "⚠️  CF token/zone missing in ~/.streamtrik-env"
+  fi
+else
+  echo "⚠️  ~/.streamtrik-env not found — skipping CF purge"
+fi
+
 echo ""
 echo "🎉 Done! Live at https://$DOMAIN"
