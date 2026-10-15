@@ -1,8 +1,9 @@
 """Headless stream resolver — extracts raw m3u8 URL and proxies segments."""
 import asyncio
 import os
+import re
 import time
-from urllib.parse import urljoin, urlparse, quote
+from urllib.parse import urljoin, urlparse, quote, parse_qs
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse, Response, StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -62,8 +63,84 @@ async def _evict_expired_and_overflow():
                     asyncio.create_task(_close_ctx_safely(ctx))
 
 
+# Hosts whose m3u8 URL is embedded as plain text in a downstream player page.
+# We bypass Playwright entirely for these — faster, no ad scripts, no autoplay issues.
+_DADDY_HOSTS = ("daddylive.app", "daddylive.sx", "daddylivehd.sx", "dlhd.sx", "dlhd.so")
+_DADDY_PLAYER_TMPL = "https://daddyliveplayer.st/premiumtv/worldsportz4u.php?id={id}"
+_DADDY_SRC_RE = re.compile(r'const\s+SRC\s*=\s*["\']([^"\']+\.m3u8[^"\']*)["\']')
+# Fallback: match any https *.m3u8 URL in page HTML
+_ANY_M3U8_RE = re.compile(r'https?://[^\s\'"<>]+?\.m3u8[^\s\'"<>]*')
+
+# Reusable HTTP client for direct playlist/segment fetches (no browser needed)
+_direct_client = httpx.AsyncClient(
+    timeout=15.0, follow_redirects=True, http2=True,
+    limits=httpx.Limits(max_connections=100, max_keepalive_connections=50),
+)
+
+
+def _is_daddylive(url: str) -> bool:
+    try:
+        host = urlparse(url).netloc.lower()
+    except Exception:
+        return False
+    return any(host == h or host.endswith("." + h) for h in _DADDY_HOSTS)
+
+
+def _extract_daddy_channel_id(url: str) -> str | None:
+    """Pulls the numeric channel id from daddylive URLs like /player/embed.php?id=31."""
+    try:
+        p = urlparse(url)
+        qs = parse_qs(p.query)
+        cid = (qs.get("id") or qs.get("stream") or [None])[0]
+        if cid and cid.isdigit():
+            return cid
+        # Also match /stream/stream-31.php or /live/31 patterns in path
+        m = re.search(r'(?:stream-|/live/|/livetv/|/premium)(\d+)', p.path)
+        if m:
+            return m.group(1)
+    except Exception:
+        pass
+    return None
+
+
+async def _resolve_daddylive_fast(embed_url: str) -> dict | None:
+    """HTTP-only resolver for daddylive.app embed URLs.
+
+    Chain: daddylive.app/player/embed.php?id=N -> downstream player page
+    (worldsportz4u.cfd / gomstream.xyz) -> iframe daddyliveplayer.st/premiumtv/*.php?id=N
+    The final page contains `const SRC = "https://edge.*.sbs/premiumN/index.m3u8"`.
+    """
+    cid = _extract_daddy_channel_id(embed_url)
+    if not cid:
+        return None
+    player_url = _DADDY_PLAYER_TMPL.format(id=cid)
+    try:
+        r = await _direct_client.get(player_url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+            "Referer": "https://worldsportz4u.cfd/",
+            "Accept": "text/html,application/xhtml+xml",
+        })
+    except Exception:
+        return None
+    if r.status_code != 200:
+        return None
+    body = r.text
+    m = _DADDY_SRC_RE.search(body) or _ANY_M3U8_RE.search(body)
+    if not m:
+        return None
+    m3u8 = m.group(1) if m.lastindex else m.group(0)
+    return {
+        "m3u8": m3u8,
+        "context": None,  # No Playwright context needed
+        "headers": {"referer": "https://daddyliveplayer.st/", "origin": "https://daddyliveplayer.st"},
+    }
+
+
 async def resolve_session(embed_url: str, timeout: int = 20) -> dict:
-    """Opens a persistent browser context — kept alive so m3u8 session cookies stay valid."""
+    """Opens a persistent browser context — kept alive so m3u8 session cookies stay valid.
+
+    For daddylive.app URLs (no TLS-fingerprinted CDN; m3u8 is in page HTML as plain text),
+    uses an HTTP-only fast path — no Playwright, no ad script delays."""
     now = time.time()
     cached = SESSIONS.get(embed_url)
     if cached and cached[3] > now:
@@ -78,6 +155,14 @@ async def resolve_session(embed_url: str, timeout: int = 20) -> dict:
         if old_ctx:
             asyncio.create_task(_close_ctx_safely(old_ctx))
         SESSIONS.pop(embed_url, None)
+
+    # Fast path: daddylive.app family — no browser needed
+    if _is_daddylive(embed_url):
+        res = await _resolve_daddylive_fast(embed_url)
+        if res:
+            SESSIONS[embed_url] = (res["m3u8"], None, res["headers"], now + SESSION_TTL)
+            return res
+        raise HTTPException(status_code=404, detail="daddylive m3u8 not found")
 
     browser = await get_browser()
     ctx = await browser.new_context(
@@ -130,8 +215,37 @@ async def _start_evictor():
 
 
 async def fetch_via_browser(ctx, url: str, orig_headers: dict):
-    """Fetches via page.evaluate(fetch()) — the ONLY proven working path.
-    Must run inside the embed.st document context (not navigate)."""
+    """Fetches via page.evaluate(fetch()) — the ONLY proven working path for embed.st.
+    Must run inside the embed.st document context (not navigate).
+    If ctx is None (daddylive fast path), falls back to direct HTTP with the
+    headers hinted by resolve_session (Referer: daddyliveplayer.st etc)."""
+    if ctx is None:
+        ref = (orig_headers or {}).get("referer") or (orig_headers or {}).get("Referer") or "https://daddyliveplayer.st/"
+        origin = (orig_headers or {}).get("origin") or (orig_headers or {}).get("Origin") or "https://daddyliveplayer.st"
+        try:
+            r = await _direct_client.get(url, headers={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
+                "Referer": ref,
+                "Origin": origin,
+                "Accept": "*/*",
+            })
+            body = r.content
+            class _R:
+                def __init__(self, status, headers, body):
+                    self.status = status
+                    self.headers = dict(headers) if headers else {}
+                    self._body = body
+                async def text(self): return self._body.decode('utf-8', errors='replace')
+                async def body(self): return self._body
+            return _R(r.status_code, r.headers, body)
+        except Exception as e:
+            class _E:
+                status = 502
+                headers = {}
+                def __init__(self, msg): self._msg = msg
+                async def text(self): return self._msg
+                async def body(self): return self._msg.encode()
+            return _E(str(e))
     pages = ctx.pages
     page = None
     for p in pages:
@@ -308,16 +422,24 @@ async def stream_segment_head(embed: str = Query(...), url: str = Query(...)):
     )
 
 
+def _ref_origin_for(embed: str) -> tuple[str, str]:
+    """Pick the correct Referer/Origin for upstream segment fetches based on the embed source."""
+    if _is_daddylive(embed):
+        return "https://daddyliveplayer.st/", "https://daddyliveplayer.st"
+    return "https://embed.st/", "https://embed.st"
+
+
 @app.get("/seg")
 async def stream_segment(embed: str = Query(...), url: str = Query(...)):
+    seg_ref, seg_origin = _ref_origin_for(embed)
     # Fast path: segments on signed CDNs (tiktokcdn.com, etc.) don't need browser context
     if not url.endswith(".m3u8"):
         try:
             # TRUE streaming — don't buffer in memory
             req = _seg_client.build_request("GET", url, headers={
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36",
-                "Referer": "https://embed.st/",
-                "Origin": "https://embed.st",
+                "Referer": seg_ref,
+                "Origin": seg_origin,
                 "Accept": "*/*",
             })
             upstream = await _seg_client.send(req, stream=True)

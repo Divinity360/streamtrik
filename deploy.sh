@@ -16,6 +16,7 @@ echo "🚀 Deploying StreamTrik to $DOMAIN..."
 
 # Package files
 echo "📁 Creating deployment package..."
+INDEXNOW_FILES=$(cd "$SITE_DIR" && /bin/ls | /usr/bin/grep -E '^[a-f0-9]{32}\.txt$' | /usr/bin/tr '\n' ' ')
 COPYFILE_DISABLE=1 tar -czf /tmp/streamtrik-deploy.tar.gz \
   -C "$SITE_DIR" \
   index.html \
@@ -24,7 +25,9 @@ COPYFILE_DISABLE=1 tar -czf /tmp/streamtrik-deploy.tar.gz \
   nginx-streamtrik.conf \
   robots.txt \
   llms.txt \
-  manifest.webmanifest
+  manifest.webmanifest \
+  indexer.js \
+  $INDEXNOW_FILES
 
 echo "✅ Package ready"
 

@@ -1300,7 +1300,9 @@ function loadStream(url){
   // Destroy previous HLS instance
   if(hlsInstance){hlsInstance.destroy();hlsInstance=null}
 
-  // 🎯 AD-FREE PATH: embed.st URLs → route through our m3u8 resolver → HLS.js
+  // 🎯 AD-FREE PATH: embed.st URLs → m3u8 resolver → HLS.js
+  // daddylive.app EXCLUDED: their TS packets are encoded into PNG pixel data as DRM obfuscation.
+  // HLS.js can't decode PNG-as-video — only their JS player can. So we iframe (with sandbox for popup block).
   if(url.includes('embed.st/embed/')){
     const resolvedUrl = '/stream?embed=' + encodeURIComponent(url);
     iframe.style.display='none';iframe.src='';
@@ -1311,9 +1313,7 @@ function loadStream(url){
   else if(url.includes('daddylive.app') || url.includes('nontongo.win') || url.includes('/embed')){
     video.style.display='none';
     video.pause();video.src='';
-    // 🛡️ Sandbox blocks popups/pop-unders from daddylive without breaking playback.
-    // We KEEP: allow-scripts (needed for player JS), allow-same-origin (needed for session cookies).
-    // We DROP: allow-popups, allow-popups-to-escape-sandbox, allow-top-navigation — kills ads.
+    // 🛡️ Sandbox blocks popups/pop-unders without breaking playback.
     if(url.includes('daddylive.app') || url.includes('nontongo.win')){
       iframe.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-presentation');
     } else {
