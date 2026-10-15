@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>StreamTrik — Free Live Sports Streaming | Premier League, NFL, NBA, UCL, UFC</title>
+<meta name="description" content="Watch live sports streams free in HD on StreamTrik. Premier League, Champions League, NFL, NBA, UFC, MLB and more. Multiple server options, no signup required."/>
+<meta name="keywords" content="live sports streaming, free sports streams, premier league live, nfl live, nba live, champions league stream, ufc live, mlb live, watch sports free, hd sports streams"/>
+<meta name="robots" content="index, follow, max-image-preview:large"/>
+<meta name="google-site-verification" content="wXAQ_Q19wteuIgOkV_ueVeB7X2oSsOYfRCNEAUA0eF4" />
+<link rel="canonical" href="https://streamtrik.com/"/>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<meta name="theme-color" content="#f43f5e"/>
+<meta property="og:type" content="website"/>
+<meta property="og:title" content="StreamTrik — Free Live Sports Streaming"/>
+<meta property="og:description" content="Watch Premier League, NFL, NBA, Champions League live in HD. Free, no signup, multiple servers."/>
+<meta property="og:url" content="https://streamtrik.com/"/>
+<meta property="og:site_name" content="StreamTrik"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"StreamTrik","url":"https://streamtrik.com/","potentialAction":{"@type":"SearchAction","target":"https://streamtrik.com/?q={search_term_string}","query-input":"required name=search_term_string"}}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0c;
+  --surface:rgba(255,255,255,0.06);
+  --surface2:rgba(255,255,255,0.1);
+  --border:rgba(255,255,255,0.1);
+  --accent:#e8ff47;
+  --accent2:#f43f5e;
+  --text:#fff;
+  --text2:rgba(255,255,255,0.65);
+  --text3:rgba(255,255,255,0.4);
+  --radius:12px;
+  --nav-h:72px;
+}
+html,body{height:100%;overflow-x:hidden}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.15);border-radius:4px}
+
+/* ---- NAVBAR ---- */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px 24px;
+  pointer-events:none;
+}
+.nav-pill{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(20,20,22,0.85);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:40px;
+  padding:6px 8px 6px 8px;
+  pointer-events:all;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 12px;
+  text-decoration:none;
+  color:#fff;
+  font-weight:800;font-size:0.95rem;letter-spacing:-0.3px;
+  margin-right:4px;
+}
+.nav-logo-mark{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--accent2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:900;
+}
+.nav-links{display:flex;align-items:center;gap:1px}
+.nav-link{
+  padding:8px 14px;border-radius:30px;
+  color:var(--text2);font-size:0.85rem;font-weight:500;
+  text-decoration:none;cursor:pointer;border:none;
+  background:transparent;font-family:'Inter',sans-serif;
+  transition:all 0.2s;white-space:nowrap;
+}
+.nav-link:hover{color:#fff;background:var(--surface)}
+.nav-link.active{
+  background:rgba(255,255,255,0.15);
+  color:#fff;font-weight:600;
+}
+.nav-sep{width:1px;height:24px;background:rgba(255,255,255,0.12);margin:0 4px}
+.nav-icon{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text2);font-size:1rem;
+  cursor:pointer;transition:all 0.2s;border:none;background:transparent;
+  font-family:'Inter',sans-serif;
+}
+.nav-icon:hover{color:#fff;background:var(--surface)}
+.nav-signin{
+  margin-left:4px;
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.15);
+  color:#fff;font-size:0.8rem;font-weight:600;
+  padding:8px 16px;border-radius:30px;
+  cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all 0.2s;
+}
+.nav-signin:hover{background:rgba(255,255,255,0.18)}
+
+/* ---- HERO ---- */
+.hero{
+  position:relative;
+  width:100%;height:100vh;min-height:600px;
+  overflow:hidden;
+  display:flex;flex-direction:column;justify-content:flex-end;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transition:all 1.2s ease;
+}
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(
+    to right,
+    rgba(10,10,12,0.92) 0%,
+    rgba(10,10,12,0.6) 45%,
+    rgba(10,10,12,0.2) 75%,
+    transparent 100%
+  ),
+  linear-gradient(
+    to top,
+    rgba(10,10,12,0.95) 0%,
+    rgba(10,10,12,0.5) 30%,
+    transparent 60%
+  );
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:0 56px 80px;
+  max-width:680px;
+}
+.hero-meta{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:14px;
+}
+.hero-badge{
+  font-size:0.7rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;
+  padding:4px 12px;border-radius:4px;
+}
+.badge-live{
+  background:var(--accent2);color:#fff;
+  animation:badgePulse 2s infinite;
+}
+.badge-upcoming{background:rgba(255,255,255,0.15);color:var(--text2);border:1px solid var(--border)}
+.badge-sport{background:rgba(232,255,71,0.15);color:var(--accent);border:1px solid rgba(232,255,71,0.3)}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(244,63,94,0.4)}50%{box-shadow:0 0 0 6px rgba(244,63,94,0)}}
+.hero-competition{
+  font-size:0.8rem;font-weight:600;color:var(--accent);letter-spacing:0.5px;
+}
+.hero-title{
+  font-size:clamp(2.2rem,5vw,4rem);
+  font-weight:900;line-height:1.05;letter-spacing:-1.5px;
+  margin-bottom:16px;
+  text-shadow:0 2px 20px rgba(0,0,0,0.5);
+}
+.hero-teams{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:20px;
+}
+.hero-team{
+  display:flex;align-items:center;gap:10px;
+}
+.hero-team-flag{font-size:2rem}
+.hero-team-badge{width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6))}
+.hero-team-name{font-size:1rem;font-weight:700;color:var(--text2);max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hero-vs{font-size:0.75rem;font-weight:800;color:var(--text3);letter-spacing:2px}
+.hero-desc{
+  font-size:0.95rem;color:var(--text2);line-height:1.6;
+  margin-bottom:28px;max-width:480px;
+}
+.hero-time{
+  display:flex;align-items:center;gap:8px;
+  margin-bottom:24px;
+  font-size:0.85rem;color:var(--text3);
+}
+.hero-time strong{color:var(--text)}
+.hero-time-progress{
+  flex:1;max-width:160px;height:3px;
+  background:rgba(255,255,255,0.15);
+  border-radius:3px;overflow:hidden;
+}
+.hero-time-fill{
+  height:100%;
+  background:var(--accent2);
+  transition:width 30s linear;
+  border-radius:3px;
+}
+.hero-actions{display:flex;align-items:center;gap:12px}
+.btn-watch{
+  display:flex;align-items:center;gap:10px;
+  background:#fff;color:#000;
+  font-size:0.95rem;font-weight:700;
+  padding:13px 28px;border-radius:30px;
+  border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;
+  transition:all 0.2s;
+  box-shadow:0 4px 20px rgba(255,255,255,0.2);
+}
+.btn-watch:hover{background:rgba(255,255,255,0.9);transform:scale(1.03)}
+.btn-watch svg{flex-shrink:0}
+.btn-info{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.12);color:#fff;
+  font-size:0.95rem;font-weight:600;
+  padding:13px 24px;border-radius:30px;
+  border:1px solid rgba(255,255,255,0.15);
+  cursor:pointer;font-family:'Inter',sans-serif;
+  transition:all 0.2s;
+  backdrop-filter:blur(8px);
+}
+.btn-info:hover{background:rgba(255,255,255,0.2)}
+.hero-channel{
+  position:absolute;bottom:80px;right:56px;
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;
+  z-index:2;
+}
+.hero-channel-label{font-size:0.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+.hero-channel-logo{
+  width:64px;height:64px;border-radius:12px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.15);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  backdrop-filter:blur(8px);
+}
+.hero-channel-logo img{width:100%;height:100%;object-fit:contain;padding:8px}
+
+/* HERO DOTS */
+.hero-dots{
+  position:absolute;right:24px;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:8px;z-index:2;
+}
+.hero-dot{
+  width:4px;border-radius:4px;background:rgba(255,255,255,0.25);
+  cursor:pointer;transition:all 0.3s;
+}
+.hero-dot.active{background:#fff;height:28px!important}
+
+/* ---- TICKER ---- */
+.ticker-wrap{
+  position:relative;z-index:10;
+  background:rgba(20,20,22,0.9);
+  border-top:1px solid rgba(255,255,255,0.08);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  padding:10px 0;overflow:hidden;
+}
+.ticker-inner{
+  display:flex;align-items:center;gap:0;
+  white-space:nowrap;
+  animation:ticker 40s linear infinite;
+}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:0 40px;
+  font-size:0.78rem;color:var(--text2);
+}
+.ticker-item .dot{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--accent2);flex-shrink:0;
+}
+.ticker-item .live-tag{
+  color:var(--accent2);font-weight:700;font-size:0.7rem;
+}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-label{
+  position:absolute;left:0;top:0;bottom:0;z-index:1;
+  display:flex;align-items:center;gap:8px;
+  padding:0 16px;
+  background:linear-gradient(90deg,rgba(20,20,22,1) 85%,transparent);
+  font-size:0.7rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent2);
+  white-space:nowrap;
+}
+
+/* ---- SECTIONS ---- */
+.page{padding:0 0 80px}
+.section{padding:40px 56px 0}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+}
+.section-title{
+  font-size:1.1rem;font-weight:700;display:flex;align-items:center;gap:10px;
+}
+.section-title::before{
+  content:'';display:block;width:3px;height:18px;
+  background:var(--accent2);border-radius:2px;
+}
+.section-nav{display:flex;gap:6px}
+.section-nav-btn{
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--border);background:var(--surface);
+  color:#fff;font-size:1rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.section-nav-btn:hover{background:var(--surface2)}
+
+/* ---- CARDS ROW ---- */
+.cards-row-wrap{position:relative}
+.cards-row{
+  display:flex;gap:14px;
+  overflow-x:auto;padding-bottom:4px;
+  scrollbar-width:none;
+}
+.cards-row::-webkit-scrollbar{display:none}
+.channel-card{
+  flex:0 0 220px;
+  width:220px;
+  height:140px;
+  border-radius:var(--radius);overflow:hidden;
+  position:relative;cursor:pointer;
+  transition:transform 0.25s,box-shadow 0.25s;
+  background:#1a1a1a;
+  border:1px solid rgba(255,255,255,0.08);
+}
+.channel-card:hover{
+  transform:scale(1.04) translateY(-4px);
+  box-shadow:0 16px 40px rgba(0,0,0,0.6);
+  z-index:2;
+}
+.channel-card-bg{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+}
+.channel-card-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.9) 0%,rgba(0,0,0,0.3) 50%,rgba(0,0,0,0.1) 100%);
+}
+.channel-card-live{
+  position:absolute;top:10px;left:10px;
+  display:flex;align-items:center;gap:5px;
+  background:var(--accent2);
+  color:#fff;font-size:0.6rem;font-weight:800;letter-spacing:1px;
+  padding:3px 8px;border-radius:4px;
+}
+.channel-card-live-dot{
+  width:5px;height:5px;border-radius:50%;background:#fff;
+  animation:pulse 1s infinite;
+}
+.channel-card-upcoming{
+  position:absolute;top:10px;left:10px;
+  background:rgba(0,0,0,0.6);
+  color:var(--text2);font-size:0.6rem;font-weight:700;letter-spacing:0.5px;
+  padding:3px 8px;border-radius:4px;border:1px solid var(--border);
+}
+.channel-card-logo{
+  position:absolute;top:10px;right:10px;
+  width:32px;height:32px;border-radius:8px;
+  background:rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.15);
+  overflow:hidden;backdrop-filter:blur(4px);
+}
+.channel-card-logo img{width:100%;height:100%;object-fit:contain;padding:4px}
+.channel-card-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:12px;
+}
+.channel-card-comp{
+  font-size:0.65rem;font-weight:700;color:var(--accent);
+  text-transform:uppercase;letter-spacing:0.5px;
+  margin-bottom:3px;
+}
+.channel-card-title{
+  font-size:0.82rem;font-weight:700;
+  line-height:1.3;color:#fff;
+}
+.channel-card-ch{
+  font-size:0.7rem;color:var(--text3);margin-top:3px;
+}
+.channel-card-time{
+  font-size:0.68rem;color:var(--text3);margin-top:2px;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* ---- LAYOUT: CONTENT + SIDEBAR ---- */
+.content-sidebar{
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:0;
+  padding:40px 56px 0;
+  align-items:start;
+}
+.sidebar{
+  padding-left:32px;
+  position:sticky;top:90px;
+}
+.sidebar-title{
+  font-size:0.7rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;color:var(--accent2);
+  margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-title::before{content:'';display:inline-block;width:10px;height:2px;background:var(--accent2)}
+
+.schedule-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.schedule-item:hover{background:rgba(255,255,255,0.03);margin:0 -12px;padding:12px}
+.schedule-item:last-child{border-bottom:none}
+.schedule-num{
+  font-size:1.2rem;font-weight:900;color:rgba(255,255,255,0.15);
+  min-width:24px;text-align:center;line-height:1.2;
+}
+.schedule-thumb{
+  width:56px;height:36px;border-radius:6px;
+  flex-shrink:0;overflow:hidden;
+  background:#1a1a1a;
+}
+.schedule-thumb img{width:100%;height:100%;object-fit:cover}
+.schedule-thumb-placeholder{
+  width:100%;height:100%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+}
+.schedule-info{flex:1;min-width:0}
+.schedule-comp{font-size:0.65rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.5px}
+.schedule-title{font-size:0.8rem;font-weight:600;line-height:1.3;color:#fff}
+.schedule-meta{font-size:0.7rem;color:var(--text3);margin-top:2px}
+.schedule-badge{
+  flex-shrink:0;
+  font-size:0.6rem;font-weight:800;
+  padding:2px 7px;border-radius:4px;
+  text-transform:uppercase;letter-spacing:0.5px;
+}
+.schedule-badge.live{background:var(--accent2);color:#fff}
+.schedule-badge.soon{background:rgba(232,255,71,0.15);color:var(--accent);border:1px solid rgba(232,255,71,0.3)}
+.schedule-badge.later{background:rgba(255,255,255,0.08);color:var(--text3);border:1px solid var(--border)}
+
+/* ---- VIDEO MODAL ---- */
+.modal-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(0,0,0,0.96);
+  display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.3s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;
+  background:rgba(0,0,0,0.5);
+  border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+.modal-info{display:flex;flex-direction:column;gap:2px}
+.modal-channel{font-size:0.75rem;color:var(--text3);font-weight:500}
+.modal-title{font-size:1rem;font-weight:700}
+.modal-close{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.1);border:none;
+  color:#fff;font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;
+}
+.modal-close:hover{background:rgba(255,255,255,0.2)}
+.modal-player{flex:1;position:relative;background:#000;min-height:0}
+.modal-video{width:100%;height:100%;object-fit:contain;display:block}
+#modalVideo::-webkit-media-controls-panel{background-color:rgba(0,0,0,0.5)}
+#modalVideo::-webkit-media-controls{opacity:1!important}
+#modalLoading,#modalError{pointer-events:none}
+.modal-loading{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;color:var(--text2);
+}
+.spinner{
+  width:40px;height:40px;border-radius:50%;
+  border:3px solid rgba(255,255,255,0.1);
+  border-top-color:var(--accent2);
+  animation:spin 0.8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.modal-error{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;color:var(--text2);text-align:center;padding:24px;
+}
+.modal-error-icon{font-size:3rem}
+.modal-error h3{font-size:1.1rem;font-weight:700;color:#fff}
+.modal-error p{font-size:0.85rem;max-width:360px;line-height:1.6}
+.modal-controls{
+  display:flex;align-items:center;gap:16px;
+  padding:12px 24px;
+  background:rgba(0,0,0,0.6);
+  border-top:1px solid var(--border);
+  flex-shrink:0;
+}
+.ctrl-btn{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.08);border:1px solid var(--border);
+  color:#fff;font-size:0.8rem;font-weight:600;
+  padding:8px 16px;border-radius:20px;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:background 0.2s;
+}
+.ctrl-btn:hover{background:rgba(255,255,255,0.15)}
+.ctrl-btn.primary{background:var(--accent2);border-color:var(--accent2)}
+.ctrl-btn.primary:hover{background:#c8392b}
+.modal-stream-url{
+  margin-left:auto;font-size:0.7rem;color:var(--text3);
+  max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+/* ---- SPORT TABS ---- */
+.sport-tabs-wrap{
+  position:sticky;top:0;z-index:50;
+  background:linear-gradient(180deg,rgba(10,10,12,0.98) 0%,rgba(10,10,12,0.9) 100%);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:14px 0;
+}
+.sport-tabs{
+  display:flex;gap:6px;overflow-x:auto;padding:0 56px;
+  scrollbar-width:none;
+}
+.sport-tabs::-webkit-scrollbar{display:none}
+.sport-tab{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  color:var(--text2);font-size:0.82rem;font-weight:600;
+  padding:8px 14px;border-radius:24px;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all 0.2s;white-space:nowrap;flex-shrink:0;
+}
+.sport-tab:hover{background:rgba(255,255,255,0.1);color:#fff}
+.sport-tab.active{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.sport-tab-emoji{font-size:1rem;line-height:1}
+.sport-tab-count{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:22px;height:18px;padding:0 6px;
+  background:rgba(0,0,0,0.3);border-radius:9px;
+  font-size:0.68rem;font-weight:800;
+}
+.sport-tab.active .sport-tab-count{background:rgba(0,0,0,0.4)}
+@media(max-width:768px){.sport-tabs{padding:0 16px}}
+
+/* ---- MATCHES GRID ---- */
+.matches-section{padding:40px 56px}
+.matches-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:20px;
+}
+.match-card{
+  position:relative;overflow:hidden;cursor:pointer;
+  border-radius:14px;aspect-ratio:16/10;
+  background:#15151a;border:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:16px;transition:transform 0.25s,box-shadow 0.25s;
+}
+.match-card:hover{transform:translateY(-4px);box-shadow:0 10px 40px rgba(0,0,0,0.5)}
+.mc-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.4;transition:opacity 0.3s}
+.match-card:hover .mc-bg{opacity:0.55}
+.mc-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,12,0.4) 0%,rgba(10,10,12,0.1) 40%,rgba(10,10,12,0.95) 100%)}
+.mc-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.mc-comp{
+  font-size:0.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;
+  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+.mc-teams{
+  position:relative;z-index:2;flex:1;
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  margin:12px 0;
+}
+.mc-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:0;max-width:40%}
+.mc-badge{width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5))}
+.mc-badge-ph{font-size:2.4rem;line-height:1}
+.mc-team-name{
+  font-size:0.78rem;font-weight:700;color:#fff;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+  text-shadow:0 1px 3px rgba(0,0,0,0.9);
+}
+.mc-vs{font-size:0.68rem;font-weight:800;color:var(--text3);letter-spacing:1.5px}
+.mc-title-only{
+  position:relative;z-index:2;flex:1;display:flex;align-items:center;justify-content:center;
+  font-size:1.05rem;font-weight:800;color:#fff;text-align:center;padding:0 8px;
+  text-shadow:0 2px 8px rgba(0,0,0,0.8);
+}
+.mc-bottom{
+  position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:8px;
+}
+.mc-sport{font-size:0.72rem;color:var(--text2);font-weight:600}
+.mc-watch{
+  background:#fff;color:#000;font-size:0.72rem;font-weight:800;
+  padding:5px 12px;border-radius:16px;
+}
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text3);
+  font-size:0.9rem;
+}
+@media(max-width:768px){
+  .matches-section{padding:24px 16px}
+  .matches-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+}
+
+/* ---- SERVER PICKER ---- */
+.server-picker{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 24px;background:rgba(0,0,0,0.75);
+  border-top:1px solid var(--border);flex-shrink:0;
+}
+.server-picker-label{font-size:0.8rem;font-weight:700;color:#fff;letter-spacing:0.5px}
+.server-list{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.server-btn{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,0.06);border:1px solid var(--border);
+  color:var(--text2);font-size:0.72rem;font-weight:600;
+  padding:6px 10px;border-radius:16px;cursor:pointer;
+  font-family:'Inter',sans-serif;transition:all 0.15s;white-space:nowrap;
+}
+.server-btn:hover{background:rgba(255,255,255,0.12);color:#fff}
+.server-btn.active{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.server-btn .srv-status{width:6px;height:6px;border-radius:50%;background:#999}
+.server-btn.live .srv-status{background:#22c55e}
+.server-btn.dead .srv-status{background:#ef4444}
+.server-hint{font-size:0.7rem;color:var(--text3);width:100%;margin-top:4px}
+@media(max-width:768px){
+  .server-picker{padding:10px 16px;gap:8px}
+  .server-btn{font-size:0.68rem;padding:5px 8px}
+}
+
+/* ---- GRADIENTS for card backgrounds ---- */
+.grad-laliga{background:linear-gradient(135deg,#e41f24 0%,#7a0010 40%,#1a1a1a 100%)}
+.grad-seriea{background:linear-gradient(135deg,#004e96 0%,#c0392b 50%,#111 100%)}
+.grad-bundesliga{background:linear-gradient(135deg,#D4A017 0%,#1a1a1a 100%)}
+.grad-ligue1{background:linear-gradient(135deg,#003189 0%,#c8102e 50%,#111 100%)}
+.grad-pl{background:linear-gradient(135deg,#3d1a78 0%,#00b2a9 50%,#111 100%)}
+.grad-ucl{background:linear-gradient(135deg,#001d6e 0%,#000 50%,#001d6e 100%)}
+.grad-fiba{background:linear-gradient(135deg,#0066b2 0%,#ff6b00 50%,#111 100%)}
+.grad-afl{background:linear-gradient(135deg,#003087 0%,#e4002b 50%,#111 100%)}
+
+/* ---- RESPONSIVE ---- */
+@media(max-width:900px){
+  .content-sidebar{grid-template-columns:1fr;padding:24px}
+  .sidebar{padding-left:0;margin-top:32px;position:static}
+  .section{padding:24px 24px 0}
+  .hero-content{padding:0 24px 60px}
+  .hero-channel{right:24px;bottom:60px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-pill">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">⚡</div>
+      StreamTrik
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+
+  <!-- DOTS -->
+  <div class="hero-dots" id="heroDots"></div>
+
+  <div class="hero-content">
+    <div class="hero-meta">
+      <span class="hero-badge badge-live" id="heroStatus">LIVE</span>
+      <span class="hero-badge badge-sport" id="heroSport">⚽ FOOTBALL</span>
+      <span class="hero-competition" id="heroComp">LaLiga EA Sports</span>
+    </div>
+    <h1 class="hero-title" id="heroTitle">Real Sociedad<br>vs Deportivo</h1>
+    <div class="hero-teams" id="heroTeams"></div>
+    <p class="hero-desc" id="heroDesc">Live coverage from the LaLiga EA Sports 2026/27 season. Real Sociedad face Deportivo in what promises to be a thrilling top-flight clash at Anoeta Stadium, San Sebastián.</p>
+    <div class="hero-time">
+      <strong id="heroTime">16:30 – 18:30 UTC</strong>
+      <span>·</span>
+      <div class="hero-time-progress"><div class="hero-time-fill" id="heroProgress" style="width:40%"></div></div>
+      <span id="heroChannel" style="color:var(--text2)">Go3 Sport 1</span>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-watch" id="heroWatchBtn" onclick="watchCurrent()">
+        <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8L0 16z"/></svg>
+        Watch Now
+      </button>
+      <button class="btn-info" onclick="scrollToSchedule()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="7"/><path d="M8 7v5M8 5h.01"/></svg>
+        More Info
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-channel">
+    <div class="hero-channel-label">Streaming on</div>
+    <div class="hero-channel-logo"><img id="heroLogo" src="" alt="channel"/></div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">🔴 LIVE</div>
+  <div class="ticker-inner" id="ticker"></div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page" id="pageContent">
+
+  <!-- SPORT CATEGORY TABS (powered by tvapp1 live API) -->
+  <div class="sport-tabs-wrap" id="schedule">
+    <div class="sport-tabs" id="sportTabs">
+      <button class="sport-tab active"><span class="sport-tab-emoji">🌍</span><span class="sport-tab-label">All Sports</span><span class="sport-tab-count">…</span></button>
+    </div>
+  </div>
+
+  <!-- MATCHES GRID: filtered by selected sport -->
+  <div class="matches-section">
+    <div class="matches-grid" id="matchesGrid">
+      <div class="empty-state">Loading live matches…</div>
+    </div>
+  </div>
+
+  <!-- 24/7 TV CHANNELS SECTION -->
+  <div class="section" style="padding-top:0">
+    <div class="section-head">
+      <div class="section-title">📺 24/7 TV Channels</div>
+      <div class="section-nav">
+        <button class="section-nav-btn" onclick="scrollCards('allChannelsRow',-1)">‹</button>
+        <button class="section-nav-btn" onclick="scrollCards('allChannelsRow',1)">›</button>
+      </div>
+    </div>
+    <div class="cards-row" id="allChannelsRow"></div>
+  </div>
+
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-header">
+    <div class="modal-info">
+      <div class="modal-channel" id="modalChannel"></div>
+      <div class="modal-title" id="modalTitle"></div>
+    </div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-player">
+    <video class="modal-video" id="modalVideo" controls controlsList="nodownload noplaybackrate" autoplay playsinline webkit-playsinline x-webkit-airplay="allow" preload="auto"></video>
+    <iframe class="modal-video" id="modalIframe" style="display:none;border:0" allowfullscreen allow="autoplay; fullscreen; encrypted-media" referrerpolicy="no-referrer"></iframe>
+    <div class="modal-loading" id="modalLoading">
+      <div class="spinner"></div>
+      <div>Loading stream...</div>
+    </div>
+    <div class="modal-error" id="modalError" style="display:none">
+      <div class="modal-error-icon">📡</div>
+      <h3>Stream Unavailable</h3>
+      <p>This stream may be geo-blocked or temporarily offline. Try another channel or check back later.</p>
+    </div>
+  </div>
+  <div class="modal-controls">
+    <button class="ctrl-btn primary" onclick="watchCurrent()">⚡ Featured Match</button>
+    <button class="ctrl-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
+    <button class="ctrl-btn" onclick="closeModal()">✕ Close</button>
+    <div class="modal-stream-url" id="modalStreamUrl"></div>
+  </div>
+  <div class="server-picker" id="serverPicker">
+    <div class="server-picker-label">📡 Server:</div>
+    <div class="server-list" id="serverList"></div>
+    <div class="server-hint">If a server lags or shows ads, try another ↑</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+// Route HTTP streams through server proxy to avoid mixed-content blocks on HTTPS
+function px(url) {
+  if (url.startsWith('http://')) return '/proxy?url=' + encodeURIComponent(url);
+  return url;
+}
+
+// DaddyLive embed URL helpers (primary + mirror)
+function dl(id){return 'https://daddylive.app/player/embed.php?id='+id;}
+function dlAlt(id){return 'https://daddylivehd.com/stream/stream-'+id+'.php';}
+
+const SCHEDULE = [
+  {
+    id:'laliga_levante_sevilla',
+    title:'Levante vs Sevilla',
+    competition:'LaLiga EA Sports',
+    channel:'Multi-Source',
+    sport:'football',
+    utcStart:'19:00', utcEnd:'21:00',
+    logo:'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/LaLiga_logo_2023.svg/640px-LaLiga_logo_2023.svg.png',
+    gradient:'grad-laliga',
+    teams:{h:'Levante',a:'Sevilla',hi:'🔵',ai:'⚪'},
+    desc:'LaLiga EA Sports — Levante host Sevilla. Multiple server options available.',
+    emoji:'⚽',
+    sources:[
+      {name:'DAZN LaLiga',url:dl(538)},
+      {name:'Movistar LaLiga',url:dl(84)},
+      {name:'LaLigaTV UK',url:dl(276)},
+      {name:'beIN LaLiga ES',url:dl(8028)},
+      {name:'SuperSport LaLiga',url:dl(415)},
+      {name:'M+ LALIGA TV 2',url:dl(246)},
+      {name:'Mirror',url:dlAlt(276)},
+    ]
+  },
+  {
+    id:'mlb_brewers_dodgers',
+    title:'Brewers vs Dodgers',
+    competition:'MLB Playoffs 2026',
+    channel:'Multi-Source',
+    sport:'baseball',
+    utcStart:'21:00', utcEnd:'00:00',
+    logo:'https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/TNT_Sports_logo.svg/640px-TNT_Sports_logo.svg.png',
+    gradient:'grad-pl',
+    teams:{h:'Milwaukee Brewers',a:'LA Dodgers',hi:'🟡',ai:'🔵'},
+    desc:'MLB Playoff action — Milwaukee Brewers host LA Dodgers. Multiple server options.',
+    emoji:'⚾',
+    sources:[
+      {name:'TNT Sports 1',url:dl(31)},
+      {name:'TNT Sports 2',url:dl(32)},
+      {name:'TNT Sports 3',url:dl(33)},
+      {name:'ESPN USA',url:dl(44)},
+      {name:'ESPN Deportes',url:dl(375)},
+      {name:'Mirror',url:dlAlt(31)},
+    ]
+  },
+  {
+    id:'nba_okc_hawks',
+    title:'Thunder vs Hawks',
+    competition:'NBA Preseason 2026',
+    channel:'Multi-Source',
+    sport:'basketball',
+    utcStart:'23:00', utcEnd:'01:30',
+    logo:'https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/NBA_TV.svg/960px-NBA_TV.svg.png',
+    gradient:'grad-seriea',
+    teams:{h:'OKC Thunder',a:'Atlanta Hawks',hi:'🔵',ai:'🔴'},
+    desc:'NBA Preseason — Oklahoma City Thunder vs Atlanta Hawks. Multiple server options.',
+    emoji:'🏀',
+    sources:[
+      {name:'NBA TV',url:dl(404)},
+      {name:'ESPN USA',url:dl(44)},
+      {name:'ESPN 2 MX',url:dl(926)},
+      {name:'Mirror',url:dlAlt(404)},
+    ]
+  },
+  {
+    id:'nfl_bills_rams',
+    title:'Bills vs Rams',
+    competition:'NFL Monday Night Football',
+    channel:'Multi-Source',
+    sport:'american-football',
+    utcStart:'00:15', utcEnd:'03:30',
+    logo:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Sky_Sports_logo_2020.svg/640px-Sky_Sports_logo_2020.svg.png',
+    gradient:'grad-pl',
+    teams:{h:'Buffalo Bills',a:'LA Rams',hi:'🔵',ai:'🟡'},
+    desc:'NFL Monday Night Football — Buffalo Bills vs LA Rams. Multiple server options.',
+    emoji:'🏈',
+    sources:[
+      {name:'Sky Sports Main',url:dl(38)},
+      {name:'Sky Sports Action',url:dl(37)},
+      {name:'NFL Network',url:dl(405)},
+      {name:'ESPN USA',url:dl(44)},
+      {name:'Mirror',url:dlAlt(38)},
+    ]
+  },
+];
+
+// Helper to build channel entries with sources (primary + mirror)
+function ch(id,title,competition,channel,sport,gradient,ddlId,logo,desc,emoji,extras){
+  const sources=[{name:channel,url:dl(ddlId)},{name:'Mirror',url:dlAlt(ddlId)}];
+  if(extras)extras.forEach(x=>sources.push(x));
+  return {id,title,competition,channel,sport,gradient,url:dl(ddlId),logo,desc,emoji,sources};
+}
+
+// Common logos
+const LOGOS={tnt:'https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/TNT_Sports_logo.svg/640px-TNT_Sports_logo.svg.png',sky:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Sky_Sports_logo_2020.svg/640px-Sky_Sports_logo_2020.svg.png',premier:'https://upload.wikimedia.org/wikipedia/en/thumb/8/83/Premier_Sports_logo.svg/640px-Premier_Sports_logo.svg.png',laliga:'https://upload.wikimedia.org/wikipedia/en/thumb/1/13/LaLiga_logo_2023.svg/640px-LaLiga_logo_2023.svg.png',nfl:'https://upload.wikimedia.org/wikipedia/en/thumb/8/8f/NFL_Network_logo.svg/960px-NFL_Network_logo.svg.png',redzone:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/NFL_RedZone_logo.svg/640px-NFL_RedZone_logo.svg.png',nba:'https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/NBA_TV.svg/960px-NBA_TV.svg.png',espn:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/ESPN_wordmark.svg/960px-ESPN_wordmark.svg.png',bbc1:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/BBC_One_logo_2021.svg/640px-BBC_One_logo_2021.svg.png',bbc2:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/BBC_Two_logo_2021.svg/640px-BBC_Two_logo_2021.svg.png',itv:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/ITV_logo_2019.svg/640px-ITV_logo_2019.svg.png'};
+
+// All available premium channels (via DaddyLive embed API, with multi-source fallbacks)
+const ALL_CHANNELS = [
+  // UK Premium Sports — TNT
+  {id:'tnt1',title:'TNT Sports 1',competition:'Premier League / UFC / MLB',channel:'TNT Sports 1 UK',sport:'football',gradient:'grad-pl',logo:LOGOS.tnt,desc:'TNT Sports 1 — Premier League, UFC, MLB, Champions League.',emoji:'⚽',sources:[{name:'TNT 1',url:dl(31)},{name:'TNT 2',url:dl(32)},{name:'TNT 3',url:dl(33)},{name:'Mirror',url:dlAlt(31)}]},
+  {id:'tnt2',title:'TNT Sports 2',competition:'Multi-Sport',channel:'TNT Sports 2 UK',sport:'football',gradient:'grad-pl',logo:LOGOS.tnt,desc:'TNT Sports 2 — live football, boxing and more.',emoji:'🥊',sources:[{name:'TNT 2',url:dl(32)},{name:'TNT 1',url:dl(31)},{name:'TNT 3',url:dl(33)},{name:'Mirror',url:dlAlt(32)}]},
+  {id:'tnt3',title:'TNT Sports 3',competition:'Multi-Sport',channel:'TNT Sports 3 UK',sport:'football',gradient:'grad-pl',logo:LOGOS.tnt,desc:'TNT Sports 3 — Rugby, cricket, Champions League.',emoji:'🏉',sources:[{name:'TNT 3',url:dl(33)},{name:'TNT 4',url:dl(34)},{name:'Mirror',url:dlAlt(33)}]},
+  {id:'tnt4',title:'TNT Sports 4',competition:'Multi-Sport',channel:'TNT Sports 4 UK',sport:'football',gradient:'grad-pl',logo:LOGOS.tnt,desc:'TNT Sports 4 — extra live sport coverage.',emoji:'⚽',sources:[{name:'TNT 4',url:dl(34)},{name:'TNT 5',url:dl(26)},{name:'TNT 6',url:dl(208)},{name:'Mirror',url:dlAlt(34)}]},
+  // Sky Sports
+  {id:'sky_main',title:'Sky Sports Main Event',competition:'All Sports',channel:'Sky Sports Main Event',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'The biggest live sport on Sky Sports Main Event.',emoji:'🏆',sources:[{name:'Main Event',url:dl(38)},{name:'Action',url:dl(37)},{name:'Football',url:dl(35)},{name:'Mirror',url:dlAlt(38)}]},
+  {id:'sky_football',title:'Sky Sports Football',competition:'Premier League / EFL',channel:'Sky Sports Football UK',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'Premier League, EFL and live football all day.',emoji:'⚽',sources:[{name:'Football',url:dl(35)},{name:'Main Event',url:dl(38)},{name:'Mirror',url:dlAlt(35)}]},
+  {id:'sky_cricket',title:'Sky Sports Cricket',competition:'Cricket',channel:'Sky Sports Cricket',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'International Test, T20 and county cricket live.',emoji:'🏏',sources:[{name:'Cricket',url:dl(65)},{name:'Mirror',url:dlAlt(65)}]},
+  {id:'sky_f1',title:'Sky Sports F1',competition:'Formula 1',channel:'Sky Sports F1 UK',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'Live Formula 1 races, qualifying and practice.',emoji:'🏎️',sources:[{name:'F1 UK',url:dl(60)},{name:'F1 4K',url:dl(5001)},{name:'F1 DE',url:dl(274)},{name:'Mirror',url:dlAlt(60)}]},
+  {id:'sky_tennis',title:'Sky Sports Tennis',competition:'ATP / WTA',channel:'Sky Sports Tennis UK',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'ATP / WTA tour live tennis.',emoji:'🎾',sources:[{name:'Tennis UK',url:dl(46)},{name:'Tennis DE',url:dl(884)},{name:'Mirror',url:dlAlt(46)}]},
+  {id:'sky_golf',title:'Sky Sports Golf',competition:'Golf',channel:'Sky Sports Golf UK',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'PGA, European Tour and all live golf.',emoji:'⛳',sources:[{name:'Golf UK',url:dl(70)},{name:'Golf DE',url:dl(785)},{name:'Mirror',url:dlAlt(70)}]},
+  {id:'sky_action',title:'Sky Sports Action',competition:'Multi-Sport',channel:'Sky Sports Action UK',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'NFL, boxing, UFC and MMA live.',emoji:'🥊',sources:[{name:'Action',url:dl(37)},{name:'Main Event',url:dl(38)},{name:'Mirror',url:dlAlt(37)}]},
+  {id:'sky_news',title:'Sky Sports News',competition:'News',channel:'Sky Sports News UK',sport:'football',gradient:'grad-pl',logo:LOGOS.sky,desc:'24/7 live sports news and transfer updates.',emoji:'📰',sources:[{name:'News',url:dl(366)},{name:'Mirror',url:dlAlt(366)}]},
+  {id:'premier1',title:'Premier Sports 1',competition:'Multi-Sport',channel:'Premier Sports Ireland 1',sport:'football',gradient:'grad-pl',logo:LOGOS.premier,desc:'Scottish Premiership, NASCAR, Serie A.',emoji:'⚽',sources:[{name:'Premier 1',url:dl(771)},{name:'Premier 2',url:dl(799)},{name:'Mirror',url:dlAlt(771)}]},
+  {id:'premier2',title:'Premier Sports 2',competition:'Multi-Sport',channel:'Premier Sports Ireland 2',sport:'football',gradient:'grad-pl',logo:LOGOS.premier,desc:'Premier Sports 2 — rugby, Serie A and more.',emoji:'🏉',sources:[{name:'Premier 2',url:dl(799)},{name:'Premier 1',url:dl(771)},{name:'Mirror',url:dlAlt(799)}]},
+  {id:'laligatv',title:'LaLiga TV',competition:'LaLiga',channel:'LaLigaTV UK',sport:'football',gradient:'grad-laliga',logo:LOGOS.laliga,desc:'Every live LaLiga EA Sports match. Multiple server options.',emoji:'⚽',sources:[{name:'DAZN LaLiga',url:dl(538)},{name:'Movistar',url:dl(84)},{name:'LaLigaTV UK',url:dl(276)},{name:'beIN LaLiga',url:dl(8028)},{name:'SuperSport',url:dl(415)},{name:'Mirror',url:dlAlt(276)}]},
+  // US Sports
+  {id:'nfl_net',title:'NFL Network',competition:'NFL',channel:'NFL Network',sport:'american-football',gradient:'grad-afl',logo:LOGOS.nfl,desc:'NFL Network — live American football, Thursday Night Football.',emoji:'🏈',sources:[{name:'NFL Net',url:dl(405)},{name:'NFL RedZone',url:dl(667)},{name:'Mirror',url:dlAlt(405)}]},
+  {id:'nfl_redzone',title:'NFL RedZone',competition:'NFL',channel:'NFL RedZone',sport:'american-football',gradient:'grad-afl',logo:LOGOS.redzone,desc:'Every touchdown from every NFL game, live.',emoji:'🏈',sources:[{name:'RedZone',url:dl(667)},{name:'RedZone Alt',url:dl(5101)},{name:'NFL Net',url:dl(405)},{name:'Mirror',url:dlAlt(667)}]},
+  {id:'nba_tv',title:'NBA TV',competition:'NBA',channel:'NBA TV USA',sport:'basketball',gradient:'grad-bundesliga',logo:LOGOS.nba,desc:'NBA TV — live games, analysis and NBA action 24/7.',emoji:'🏀',sources:[{name:'NBA TV',url:dl(404)},{name:'ESPN USA',url:dl(44)},{name:'Mirror',url:dlAlt(404)}]},
+  {id:'espn_usa',title:'ESPN USA',competition:'All Sports',channel:'ESPN USA',sport:'football',gradient:'grad-afl',logo:LOGOS.espn,desc:'ESPN USA — live US sports flagship.',emoji:'🏀',sources:[{name:'ESPN USA',url:dl(44)},{name:'ESPN Deportes',url:dl(375)},{name:'ESPN NL',url:dl(379)},{name:'Mirror',url:dlAlt(44)}]},
+  {id:'espn_deportes',title:'ESPN Deportes',competition:'Multi-Sport (Spanish)',channel:'ESPN Deportes',sport:'football',gradient:'grad-afl',logo:LOGOS.espn,desc:'ESPN Deportes — Liga MX, Boxing, MLB in Spanish.',emoji:'⚽',sources:[{name:'Deportes',url:dl(375)},{name:'ESPN USA',url:dl(44)},{name:'ESPN MX',url:dl(925)},{name:'Mirror',url:dlAlt(375)}]},
+  // UK Entertainment
+  {id:'bbc_one',title:'BBC One',competition:'Entertainment',channel:'BBC One UK',sport:'football',gradient:'grad-ucl',logo:LOGOS.bbc1,desc:'BBC One — flagship UK entertainment and sport.',emoji:'📺',sources:[{name:'BBC One UK',url:dl(356)},{name:'BBC One Alt',url:dl(3001)},{name:'Mirror',url:dlAlt(356)}]},
+  {id:'bbc_two',title:'BBC Two',competition:'Entertainment',channel:'BBC Two UK',sport:'football',gradient:'grad-ucl',logo:LOGOS.bbc2,desc:'BBC Two — documentaries, drama and sport.',emoji:'📺',sources:[{name:'BBC Two',url:dl(357)},{name:'Mirror',url:dlAlt(357)}]},
+  {id:'itv1',title:'ITV 1',competition:'Entertainment',channel:'ITV 1 UK',sport:'football',gradient:'grad-ucl',logo:LOGOS.itv,desc:'ITV 1 — UK commercial flagship with live sport.',emoji:'📺',sources:[{name:'ITV 1',url:dl(350)},{name:'ITV 2',url:dl(351)},{name:'Mirror',url:dlAlt(350)}]},
+  {id:'itv2',title:'ITV 2',competition:'Entertainment',channel:'ITV 2 UK',sport:'football',gradient:'grad-ucl',logo:LOGOS.itv,desc:'ITV 2 — comedy, entertainment and reality.',emoji:'📺',sources:[{name:'ITV 2',url:dl(351)},{name:'ITV 1',url:dl(350)},{name:'Mirror',url:dlAlt(351)}]},
+];
+// Backfill url field for backwards compat with other code that reads `.url`
+ALL_CHANNELS.forEach(c=>{if(!c.url&&c.sources)c.url=c.sources[0].url});
+SCHEDULE.forEach(c=>{if(!c.url&&c.sources)c.url=c.sources[0].url});
+
+// ============================================================
+// TIME UTILS
+// ============================================================
+function parseHHMM(s){if(!s||typeof s!=='string')return 0;const[h,m]=s.split(':').map(Number);return (h||0)*60+(m||0)}
+function nowUTCMinutes(){const n=new Date();return n.getUTCHours()*60+n.getUTCMinutes()}
+function getStatus(ev){
+  if(!ev||!ev.utcStart)return 'upcoming';
+  const now=nowUTCMinutes();
+  const s=parseHHMM(ev.utcStart);
+  const e=parseHHMM(ev.utcEnd);
+  if(now>=s&&now<e)return'live';
+  if(now<s)return'upcoming';
+  return'ended';
+}
+function matchProgress(ev){
+  if(!ev||!ev.utcStart)return 50;
+  const now=nowUTCMinutes();
+  const s=parseHHMM(ev.utcStart);
+  const e=parseHHMM(ev.utcEnd);
+  if(now<s)return 0;
+  if(now>=e)return 100;
+  return Math.round((now-s)/(e-s)*100);
+}
+function utcToWAT(t){if(!t||typeof t!=='string')return '';const[h,m]=t.split(':').map(Number);const nh=(h+1)%24;return`${String(nh).padStart(2,'0')}:${String(m).padStart(2,'0')}`}
+
+// ============================================================
+// HERO
+// ============================================================
+let heroIndex=0;
+const heroMatches=SCHEDULE.filter(e=>getStatus(e)!=='ended');
+const fallbackHero=SCHEDULE[0]; // always show something
+
+function getHeroItems(){
+  // Prefer live tvapp1 matches when loaded; filter to those that are LIVE or very soon
+  if(TODAY_MATCHES&&TODAY_MATCHES.length){
+    const now=Date.now();
+    const liveNow=TODAY_MATCHES.filter(m=>m._ts&&m._ts<now+15*60000&&m._ts>now-3*3600000);
+    const soon=TODAY_MATCHES.filter(m=>m._ts&&m._ts>=now+15*60000&&m._ts<now+4*3600000);
+    const items=[...liveNow,...soon].slice(0,8);
+    if(items.length)return items;
+  }
+  const live=SCHEDULE.filter(e=>getStatus(e)==='live');
+  const upcoming=SCHEDULE.filter(e=>getStatus(e)==='upcoming');
+  return [...live,...upcoming,...(live.length+upcoming.length===0?[fallbackHero]:[])];
+}
+
+function renderHero(item){
+  if(!item)item=fallbackHero;
+  const isLive=item._ts?(item._ts<Date.now()+15*60000):(getStatus(item)==='live');
+
+  // Background: match poster if available, else gradient
+  const bgEl=document.getElementById('heroBg');
+  const img=item.poster||item.logo||'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1920&q=80';
+  bgEl.style.backgroundImage=`url('${img}')`;
+  bgEl.style.backgroundSize='cover';
+  bgEl.style.backgroundPosition='center';
+
+  // Status badge
+  const statusEl=document.getElementById('heroStatus');
+  if(isLive){statusEl.textContent='● LIVE NOW';statusEl.className='hero-badge badge-live';}
+  else if(item._ts){
+    const mins=Math.round((item._ts-Date.now())/60000);
+    if(mins<180)statusEl.textContent='IN '+mins+' MIN';
+    else statusEl.textContent='STARTS '+new Date(item._ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    statusEl.className='hero-badge badge-upcoming';
+  }else{statusEl.textContent=(getStatus(item)==='upcoming'?'UPCOMING':'REPLAY');statusEl.className='hero-badge badge-upcoming';}
+
+  document.getElementById('heroSport').textContent=(item.emoji||'📺')+' '+(SPORT_NAME[item.sport]||'LIVE SPORT').toUpperCase();
+  document.getElementById('heroComp').textContent=item.competition;
+  document.getElementById('heroTitle').textContent=item.title;
+  document.getElementById('heroDesc').textContent=item.desc||item.title;
+
+  // Time info — if from API use real timestamp, else fall back to UTC string
+  const timeEl=document.getElementById('heroTime');
+  if(item._ts){
+    const d=new Date(item._ts);
+    const now=Date.now();
+    const diff=item._ts-now;
+    if(diff<0&&diff>-3*3600000){
+      const mins=Math.floor(-diff/60000);
+      timeEl.innerHTML='<strong>Started '+mins+' min ago</strong>';
+    }else if(diff<3600000&&diff>0){
+      const mins=Math.floor(diff/60000);
+      timeEl.innerHTML='<strong>Starts in '+mins+' min</strong>';
+    }else{
+      timeEl.innerHTML='<strong>'+d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',weekday:'short'})+'</strong>';
+    }
+  }else if(item.utcStart){
+    timeEl.textContent=`${item.utcStart}–${item.utcEnd} UTC`;
+  }
+  document.getElementById('heroChannel').textContent=item.channel||'';
+  document.getElementById('heroProgress').style.width=(item.utcStart?matchProgress(item):50)+'%';
+
+  const teamsEl=document.getElementById('heroTeams');
+  if(item.teams&&(item.teams.h||item.teams.hb)){
+    const hb=item.teams.hb?'<img class="hero-team-badge" src="'+item.teams.hb+'" onerror="this.style.display=\'none\'"/>':('<div class="hero-team-flag">'+(item.teams.hi||'')+'</div>');
+    const ab=item.teams.ab?'<img class="hero-team-badge" src="'+item.teams.ab+'" onerror="this.style.display=\'none\'"/>':('<div class="hero-team-flag">'+(item.teams.ai||'')+'</div>');
+    teamsEl.innerHTML=`
+      <div class="hero-team">${hb}<div class="hero-team-name">${item.teams.h||''}</div></div>
+      <div class="hero-vs">VS</div>
+      <div class="hero-team">${ab}<div class="hero-team-name">${item.teams.a||''}</div></div>`;
+    teamsEl.style.display='flex';
+  } else {
+    teamsEl.style.display='none';
+  }
+
+  const logoEl=document.getElementById('heroLogo');
+  logoEl.src=item.logo||'';
+  logoEl.style.display=item.logo?'block':'none';
+
+  document.getElementById('hero').dataset.currentId=item.id;
+}
+
+function renderHeroDots(){
+  const items=getHeroItems();
+  const dotsEl=document.getElementById('heroDots');
+  dotsEl.innerHTML=items.map((item,i)=>{
+    const heights=[28,14,14,14];
+    return`<div class="hero-dot${i===heroIndex?' active':''}" style="height:${i===heroIndex?28:14}px" onclick="goHero(${i})"></div>`;
+  }).join('');
+}
+
+function goHero(i){
+  const items=getHeroItems();
+  heroIndex=Math.max(0,Math.min(i,items.length-1));
+  renderHero(items[heroIndex]);
+  renderHeroDots();
+}
+
+// Auto-rotate hero every 8s
+function autoRotateHero(){
+  const items=getHeroItems();
+  if(items.length>1){
+    heroIndex=(heroIndex+1)%items.length;
+    renderHero(items[heroIndex]);
+    renderHeroDots();
+  }
+}
+
+// ============================================================
+// TICKER
+// ============================================================
+function renderTicker(){
+  const all=[...SCHEDULE,...ALL_CHANNELS];
+  const items=all.slice(0,10);
+  const tickerEl=document.getElementById('ticker');
+  // Duplicate for infinite scroll
+  const html=items.map(ev=>{
+    const s=getStatus(ev);
+    const liveTag=s==='live'?'<span class="live-tag">LIVE ·</span> ':'';
+    return`<div class="ticker-item"><div class="dot"></div>${liveTag}${ev.competition}: ${ev.title} — ${ev.channel}</div>`;
+  }).join('');
+  tickerEl.innerHTML=html+html; // double for seamless loop
+}
+
+// ============================================================
+// LIVE CARDS
+// ============================================================
+function cardBg(item){
+  const gradMap={
+    'grad-laliga':'linear-gradient(135deg,#8b0010,#3d0008)',
+    'grad-seriea':'linear-gradient(135deg,#004e96,#7a0010)',
+    'grad-bundesliga':'linear-gradient(135deg,#c8a415,#333)',
+    'grad-pl':'linear-gradient(135deg,#3d1a78,#00b2a9)',
+    'grad-ucl':'linear-gradient(135deg,#001d6e,#333)',
+    'grad-ligue1':'linear-gradient(135deg,#003189,#c8102e)',
+    'grad-fiba':'linear-gradient(135deg,#0066b2,#ff6b00)',
+    'grad-afl':'linear-gradient(135deg,#003087,#e4002b)',
+  };
+  return gradMap[item.gradient]||gradMap['grad-laliga'];
+}
+
+function makeCard(item){
+  const status=getStatus(item);
+  const statusHtml=status==='live'
+    ?`<div class="channel-card-live"><div class="channel-card-live-dot"></div>LIVE</div>`
+    :status==='upcoming'
+    ?`<div class="channel-card-upcoming">⏰ ${item.utcStart} UTC</div>`
+    :`<div class="channel-card-upcoming">Ended</div>`;
+
+  const logoHtml=item.logo?`<div class="channel-card-logo"><img src="${item.logo}" alt="${item.channel}" onerror="this.parentElement.style.display='none'"/></div>`:'';
+  const teamsHtml=item.teams?`${item.teams.hi} vs ${item.teams.ai} · `:'';
+
+  return`<div class="channel-card" onclick="openStream('${item.id}')">
+    <div class="channel-card-bg" style="background:${cardBg(item)}"></div>
+    <div class="channel-card-overlay"></div>
+    ${statusHtml}
+    ${logoHtml}
+    <div class="channel-card-info">
+      <div class="channel-card-comp">${item.competition}</div>
+      <div class="channel-card-title">${item.title}</div>
+      <div class="channel-card-ch">${item.channel}</div>
+      <div class="channel-card-time">${item.utcStart}–${item.utcEnd} UTC</div>
+    </div>
+  </div>`;
+}
+
+function renderLiveCards(){
+  const live=SCHEDULE.filter(e=>getStatus(e)==='live');
+  const liveRow=document.getElementById('liveRow');
+  const liveSection=document.getElementById('liveSection');
+  liveSection.style.display='block';
+  // If nothing is live by exact time, show all schedule items as "watch now"
+  const items=live.length>0 ? live : SCHEDULE;
+  liveRow.innerHTML=items.map(makeCard).join('');
+}
+
+function renderUpNext(){
+  const upcoming=SCHEDULE.filter(e=>getStatus(e)==='upcoming');
+  const ended=SCHEDULE.filter(e=>getStatus(e)==='ended');
+  const row=document.getElementById('upNextRow');
+  // Show upcoming, or if all ended show replays
+  const items=upcoming.length>0 ? upcoming : ended;
+  row.innerHTML=items.map(makeCard).join('');
+}
+
+function renderAllChannels(){
+  const row=document.getElementById('allChannelsRow');
+  row.innerHTML=ALL_CHANNELS.map(function(ch){
+    var bg=cardBg(ch);
+    var logoHtml=ch.logo?'<div class="channel-card-logo"><img src="'+ch.logo+'" alt="'+ch.channel+'" onerror="this.parentElement.style.display=\'none\'"/></div>':'';
+    return '<div class="channel-card" onclick="openStream(\''+ch.id+'\')">'
+      +'<div class="channel-card-bg" style="background:'+bg+'"></div>'
+      +'<div class="channel-card-overlay"></div>'
+      +'<div class="channel-card-live"><div class="channel-card-live-dot"></div>ON AIR</div>'
+      +logoHtml
+      +'<div class="channel-card-info">'
+      +'<div class="channel-card-comp">'+ch.competition+'</div>'
+      +'<div class="channel-card-title">'+ch.channel+'</div>'
+      +'<div class="channel-card-ch">'+ch.desc.substring(0,45)+'...</div>'
+      +'</div>'
+      +'</div>';
+  }).join('');
+}
+
+// ============================================================
+// SIDEBAR SCHEDULE
+// ============================================================
+function renderSidebar(){
+  const list=document.getElementById('scheduleList');
+  const allItems=[...SCHEDULE,...ALL_CHANNELS.slice(0,3)];
+  list.innerHTML=SCHEDULE.map((item,i)=>{
+    const status=getStatus(item);
+    const badgeHtml=status==='live'
+      ?`<div class="schedule-badge live">● LIVE</div>`
+      :status==='upcoming'
+      ?`<div class="schedule-badge soon">${item.utcStart}</div>`
+      :`<div class="schedule-badge later">Ended</div>`;
+
+    const thumbBg=cardBg(item);
+    const teamsLabel=item.teams?`${item.teams.h} vs ${item.teams.a}`:'';
+
+    return`<div class="schedule-item" onclick="openStream('${item.id}')">
+      <div class="schedule-num">${i+1}</div>
+      <div class="schedule-thumb" style="background:${thumbBg}">
+        ${item.logo?`<img src="${item.logo}" alt="${item.channel}" onerror="this.parentElement.innerHTML='<div class=\'schedule-thumb-placeholder\'>${item.emoji}</div>'">`:`<div class="schedule-thumb-placeholder">${item.emoji}</div>`}
+      </div>
+      <div class="schedule-info">
+        <div class="schedule-comp">${item.competition}</div>
+        <div class="schedule-title">${item.title}</div>
+        <div class="schedule-meta">${item.channel} · ${item.utcStart}–${item.utcEnd} UTC</div>
+      </div>
+      ${badgeHtml}
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// STREAM PLAYER
+// ============================================================
+let hlsInstance=null;
+
+function getAllItems(){return[...SCHEDULE,...ALL_CHANNELS,...(typeof TODAY_MATCHES!=='undefined'?TODAY_MATCHES:[])]}
+
+let currentItem=null;
+let currentSourceIndex=0;
+let serverStatus={}; // {srcIdx: 'live'|'dead'|'checking'}
+
+async function openStream(id){
+  const item=getAllItems().find(e=>e.id===id);
+  if(!item)return;
+  currentItem=item;
+  currentSourceIndex=0;
+  serverStatus={};
+
+  document.getElementById('modalChannel').textContent=item.channel+' · '+item.competition;
+  document.getElementById('modalTitle').textContent=item.title;
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modalLoading').style.display='flex';
+  document.getElementById('modalError').style.display='none';
+
+  // Resolve tvapp1 live sources on demand
+  if(item._apiSources&&(!item.sources||!item.sources.length)){
+    document.getElementById('modalChannel').textContent='Loading sources...';
+    await resolveLiveSources(item);
+    document.getElementById('modalChannel').textContent=item.channel+' · '+item.competition;
+  }
+
+  renderServerPicker();
+
+  // Fire pre-flight checks for all sources in parallel (non-blocking)
+  if(item.sources&&item.sources.length>1){
+    preflightAllSources(item.sources);
+  }
+
+  const firstUrl=(item.sources&&item.sources[0]&&item.sources[0].url)||item.url;
+  document.getElementById('modalStreamUrl').textContent=firstUrl;
+  loadStream(firstUrl);
+}
+
+async function preflightAllSources(sources){
+  // Mark all as checking first
+  sources.forEach((s,i)=>{serverStatus[i]='checking';});
+  renderServerPicker();
+  // Fire checks in parallel
+  const checks=sources.map(async(s,i)=>{
+    try{
+      const r=await fetch('/check?url='+encodeURIComponent(s.url),{cache:'no-store'});
+      const data=await r.json();
+      serverStatus[i]=(data.ok&&data.hasVideo!==false)?'live':'dead';
+    }catch(e){serverStatus[i]='dead';}
+    renderServerPicker();
+    // If the current source is dead and we're still on it, auto-advance to first live one
+    if(i===currentSourceIndex&&serverStatus[i]==='dead'){
+      autoAdvanceToLive();
+    }
+  });
+  await Promise.all(checks);
+}
+
+function autoAdvanceToLive(){
+  if(!currentItem||!currentItem.sources)return;
+  const liveIdx=currentItem.sources.findIndex((_,i)=>serverStatus[i]==='live');
+  if(liveIdx>=0&&liveIdx!==currentSourceIndex){
+    switchServer(liveIdx,true);
+  }
+}
+
+function renderServerPicker(){
+  const picker=document.getElementById('serverPicker');
+  const list=document.getElementById('serverList');
+  if(!currentItem||!currentItem.sources||currentItem.sources.length<2){
+    picker.style.display='none';return;
+  }
+  picker.style.display='flex';
+  list.innerHTML=currentItem.sources.map((s,i)=>{
+    const st=serverStatus[i]||'';
+    return '<button class="server-btn '+st+(i===currentSourceIndex?' active':'')+'" onclick="switchServer('+i+')">'
+    +'<span class="srv-status"></span>'+(i+1)+'. '+s.name+'</button>';
+  }).join('');
+}
+
+function switchServer(idx,auto){
+  if(!currentItem||!currentItem.sources||!currentItem.sources[idx])return;
+  currentSourceIndex=idx;
+  const url=currentItem.sources[idx].url;
+  document.getElementById('modalStreamUrl').textContent=(auto?'↻ Auto-switched · ':'')+url;
+  document.getElementById('modalLoading').style.display='flex';
+  document.getElementById('modalError').style.display='none';
+  renderServerPicker();
+  loadStream(url);
+}
+
+function loadStream(url){
+  const video=document.getElementById('modalVideo');
+  const iframe=document.getElementById('modalIframe');
+
+  // Destroy previous HLS instance
+  if(hlsInstance){hlsInstance.destroy();hlsInstance=null}
+
+  // 🎯 AD-FREE PATH: embed.st URLs → route through our m3u8 resolver → HLS.js
+  if(url.includes('embed.st/embed/')){
+    const resolvedUrl = '/stream?embed=' + encodeURIComponent(url);
+    iframe.style.display='none';iframe.src='';
+    video.style.display='block';
+    url = resolvedUrl; // fall through to HLS.js below
+  }
+  // Iframe-embedded streams (daddylive, nontongo — 24/7 channels)
+  else if(url.includes('daddylive.app') || url.includes('nontongo.win') || url.includes('/embed')){
+    video.style.display='none';
+    video.pause();video.src='';
+    // 🛡️ Sandbox blocks popups/pop-unders from daddylive without breaking playback.
+    // We KEEP: allow-scripts (needed for player JS), allow-same-origin (needed for session cookies).
+    // We DROP: allow-popups, allow-popups-to-escape-sandbox, allow-top-navigation — kills ads.
+    if(url.includes('daddylive.app') || url.includes('nontongo.win')){
+      iframe.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-presentation');
+    } else {
+      iframe.removeAttribute('sandbox');
+    }
+    iframe.style.display='block';
+    iframe.src=url;
+    document.getElementById('modalLoading').style.display='none';
+    return;
+  }
+
+  // Direct m3u8 streams - use HLS.js
+  iframe.style.display='none';iframe.src='';
+  video.style.display='block';
+
+  if(Hls.isSupported()){
+    hlsInstance=new Hls({
+      enableWorker:true,
+      lowLatencyMode:false,
+      // Larger buffer = more resilience to transient slowdowns
+      maxBufferLength:60,            // target 60s ahead
+      maxMaxBufferLength:120,        // allow up to 2min buffer
+      maxBufferSize:120 * 1024 * 1024, // 120MB max in RAM
+      backBufferLength:30,
+      // Start at LOWEST bitrate (540p). ABR will climb up once we have real bandwidth data.
+      // This is key for Nigeria→US international links where bandwidth varies.
+      startLevel:0,
+      capLevelToPlayerSize:true,
+      abrEwmaDefaultEstimate:1500000,  // 1.5 Mbps initial estimate (conservative)
+      abrBandWidthFactor:0.85,          // only use 85% of measured BW for estimates
+      abrBandWidthUpFactor:0.60,        // require 1.66x headroom before upgrading quality
+      testBandwidth:true,
+      // Retries + timeouts
+      manifestLoadingTimeOut:20000,
+      manifestLoadingMaxRetry:4,
+      fragLoadingTimeOut:30000,
+      fragLoadingMaxRetry:6,
+      fragLoadingRetryDelay:500,
+      levelLoadingTimeOut:20000,
+      levelLoadingMaxRetry:4,
+      // Avoid stalling — jump forward if we fall behind
+      maxStarvationDelay:4,
+      maxLoadingDelay:4,
+    });
+    hlsInstance.loadSource(url);
+    hlsInstance.attachMedia(video);
+    hlsInstance.on(Hls.Events.MANIFEST_PARSED,()=>{
+      document.getElementById('modalLoading').style.display='none';
+      video.play().catch(()=>{});
+    });
+    hlsInstance.on(Hls.Events.ERROR,(evt,data)=>{
+      if(data.fatal){
+        document.getElementById('modalLoading').style.display='none';
+        document.getElementById('modalError').style.display='flex';
+      }
+    });
+  } else if(video.canPlayType('application/vnd.apple.mpegurl')){
+    // Safari native HLS
+    video.src=url;
+    video.addEventListener('loadedmetadata',()=>{
+      document.getElementById('modalLoading').style.display='none';
+      video.play().catch(()=>{});
+    });
+    video.addEventListener('error',()=>{
+      document.getElementById('modalLoading').style.display='none';
+      document.getElementById('modalError').style.display='flex';
+    });
+  } else {
+    document.getElementById('modalLoading').style.display='none';
+    document.getElementById('modalError').style.display='flex';
+  }
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  const video=document.getElementById('modalVideo');
+  const iframe=document.getElementById('modalIframe');
+  video.pause();
+  if(hlsInstance){hlsInstance.destroy();hlsInstance=null}
+  video.src='';
+  iframe.src='';
+  iframe.style.display='none';
+  video.style.display='block';
+}
+
+function watchCurrent(){
+  const items=getHeroItems();
+  const current=items[heroIndex]||SCHEDULE[0];
+  openStream(current.id);
+}
+
+function toggleFullscreen(){
+  const video=document.getElementById('modalVideo');
+  const iframe=document.getElementById('modalIframe');
+  const target=iframe.style.display==='block'?iframe:video;
+  if(document.fullscreenElement){document.exitFullscreen()}
+  else{target.requestFullscreen().catch(()=>{})}
+}
+
+function scrollToSchedule(){
+  document.getElementById('schedule').scrollIntoView({behavior:'smooth'});
+}
+
+// ============================================================
+// CARDS SCROLL
+// ============================================================
+function scrollCards(id,dir){
+  const el=document.getElementById(id);
+  el.scrollBy({left:dir*280,behavior:'smooth'});
+}
+
+// ============================================================
+// INIT
+// ============================================================
+// ============================================================
+// LIVE MATCHES API (tvapp1 schedule — api-backups.handleapi.win)
+// ============================================================
+const LIVE_API='/api';
+const IMG_HOST='https://streamed.pk/api/images';
+let TODAY_MATCHES=[];
+let LIVE_BY_SPORT={};
+let CURRENT_SPORT='all';
+const SPORT_EMOJI={football:'⚽',basketball:'🏀',baseball:'⚾','american-football':'🏈',fight:'🥊',hockey:'🏒',cricket:'🏏',rugby:'🏉',tennis:'🎾',golf:'⛳','motor-sports':'🏎️',other:'📺'};
+const SPORT_NAME={football:'Football',basketball:'Basketball',baseball:'Baseball','american-football':'NFL',fight:'Fight',hockey:'Hockey',cricket:'Cricket',rugby:'Rugby',tennis:'Tennis',golf:'Golf','motor-sports':'Motorsport'};
+
+function teamBadge(badge){return badge?IMG_HOST+'/badge/'+badge+'.webp':null;}
+function matchPoster(poster){
+  if(!poster)return null;
+  // poster field is like "/api/images/proxy/XXX.webp"
+  if(poster.startsWith('/api/'))return 'https://streamed.pk'+poster;
+  return IMG_HOST+'/proxy/'+poster+'.webp';
+}
+
+async function loadTodayMatches(){
+  try{
+    const r=await fetch(LIVE_API+'/matches/today',{cache:'no-store'});
+    const d=await r.json();
+    const now=Date.now();
+    // Include matches from 2h ago to 12h ahead (covers live + upcoming today)
+    const relevant=d.filter(m=>m.sources&&m.sources.length&&m.date&&m.date>now-2*3600000&&m.date<now+12*3600000);
+    TODAY_MATCHES=relevant.map(m=>{
+      const home=m.teams&&m.teams.home||{};
+      const away=m.teams&&m.teams.away||{};
+      return {
+        id:'live_'+(m.id||m.sources[0].id).replace(/[^a-z0-9]/gi,'_').substring(0,60),
+        title:m.title,
+        competition:friendlyComp(m),
+        channel:'Multi-Source',
+        sport:m.category||'other',
+        gradient:gradFor(m.category),
+        logo:matchPoster(m.poster),
+        poster:matchPoster(m.poster),
+        teams:{h:home.name||'',a:away.name||'',hb:teamBadge(home.badge),ab:teamBadge(away.badge),hi:'',ai:''},
+        desc:m.title,
+        emoji:SPORT_EMOJI[m.category]||'📺',
+        _apiSources:m.sources,
+        _ts:m.date,
+        sources:[],
+      };
+    }).sort((a,b)=>(a._ts||0)-(b._ts||0));
+    // Group by sport for tabs
+    LIVE_BY_SPORT={};
+    TODAY_MATCHES.forEach(m=>{(LIVE_BY_SPORT[m.sport]=LIVE_BY_SPORT[m.sport]||[]).push(m);});
+    renderSportTabs();
+    renderMatchesGrid();
+    // Refresh hero with real matches
+    if(TODAY_MATCHES.length){
+      const items=getHeroItems();
+      renderHero(items[0]);
+      renderHeroDots();
+    }
+  }catch(e){console.warn('tvapp1 API fetch failed',e);}
+}
+
+function friendlyComp(m){
+  const t=(m.title||'').toLowerCase();
+  if(t.includes('premier league'))return 'Premier League';
+  if(t.includes('champions league')||(m.sources&&m.sources.some(s=>s.id&&s.id.includes('uefa-champions-league'))))return 'UEFA Champions League';
+  if(t.includes('europa'))return 'UEFA Europa League';
+  if(t.includes('la liga')||t.includes('laliga'))return 'LaLiga';
+  if(t.includes('serie a'))return 'Serie A';
+  if(t.includes('bundesliga'))return 'Bundesliga';
+  if(t.includes('ligue 1'))return 'Ligue 1';
+  if(t.includes('mls'))return 'MLS';
+  if(m.category==='american-football')return 'NFL';
+  if(m.category==='basketball')return 'NBA';
+  if(m.category==='baseball')return 'MLB';
+  if(m.category==='hockey')return 'NHL';
+  if(m.category==='fight')return 'Combat Sport';
+  return SPORT_NAME[m.category]||'Live Event';
+}
+
+function gradFor(cat){
+  return {football:'grad-pl',basketball:'grad-bundesliga',baseball:'grad-seriea','american-football':'grad-afl',fight:'grad-pl',hockey:'grad-ucl',cricket:'grad-laliga',rugby:'grad-pl',tennis:'grad-ucl',golf:'grad-laliga','motor-sports':'grad-pl'}[cat]||'grad-pl';
+}
+
+function matchStatus(m){
+  const now=Date.now(),t=m._ts||0;
+  if(!t)return{label:'LIVE',cls:'badge-live'};
+  if(t<now-3600000)return{label:'FINISHED',cls:'badge-upcoming'};
+  if(t<now+900000)return{label:'LIVE',cls:'badge-live'};
+  if(t<now+3600000)return{label:'STARTING SOON',cls:'badge-upcoming'};
+  // Starts later - show time
+  const mins=Math.round((t-now)/60000);
+  if(mins<180)return{label:'IN '+mins+'M',cls:'badge-upcoming'};
+  const d=new Date(t);
+  return{label:d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}),cls:'badge-upcoming'};
+}
+
+function renderSportTabs(){
+  const tabsEl=document.getElementById('sportTabs');
+  if(!tabsEl)return;
+  const sports=Object.keys(LIVE_BY_SPORT).sort((a,b)=>LIVE_BY_SPORT[b].length-LIVE_BY_SPORT[a].length);
+  const total=TODAY_MATCHES.length;
+  const tabs=[{key:'all',n:total,l:'All Sports',e:'🌍'}].concat(sports.map(s=>({key:s,n:LIVE_BY_SPORT[s].length,l:SPORT_NAME[s]||s,e:SPORT_EMOJI[s]||'📺'})));
+  tabsEl.innerHTML=tabs.map(t=>
+    '<button class="sport-tab '+(CURRENT_SPORT===t.key?'active':'')+'" onclick="setSport(\''+t.key+'\')">'
+    +'<span class="sport-tab-emoji">'+t.e+'</span>'
+    +'<span class="sport-tab-label">'+t.l+'</span>'
+    +'<span class="sport-tab-count">'+t.n+'</span>'
+    +'</button>'
+  ).join('');
+}
+
+function setSport(sport){
+  CURRENT_SPORT=sport;
+  renderSportTabs();
+  renderMatchesGrid();
+}
+
+function renderMatchesGrid(){
+  const grid=document.getElementById('matchesGrid');
+  if(!grid)return;
+  const matches=CURRENT_SPORT==='all'?TODAY_MATCHES:(LIVE_BY_SPORT[CURRENT_SPORT]||[]);
+  if(!matches.length){
+    grid.innerHTML='<div class="empty-state">No matches in this category right now.</div>';
+    return;
+  }
+  grid.innerHTML=matches.slice(0,60).map(makeMatchCard).join('');
+}
+
+function makeMatchCard(m){
+  const s=matchStatus(m);
+  const bg=m.poster?('url('+m.poster+')'):'linear-gradient(135deg,#1e1e24,#0a0a0c)';
+  const hb=m.teams.hb?'<img class="mc-badge" src="'+m.teams.hb+'" onerror="this.style.display=\'none\'"/>':'<span class="mc-badge-ph">'+m.emoji+'</span>';
+  const ab=m.teams.ab?'<img class="mc-badge" src="'+m.teams.ab+'" onerror="this.style.display=\'none\'"/>':'<span class="mc-badge-ph">'+m.emoji+'</span>';
+  const teamsHtml=(m.teams.h&&m.teams.a)
+    ?('<div class="mc-teams"><div class="mc-team">'+hb+'<span class="mc-team-name">'+m.teams.h+'</span></div>'
+      +'<div class="mc-vs">vs</div>'
+      +'<div class="mc-team">'+ab+'<span class="mc-team-name">'+m.teams.a+'</span></div></div>')
+    :('<div class="mc-title-only">'+m.title+'</div>');
+  return '<div class="match-card" onclick="openStream(\''+m.id+'\')">'
+    +'<div class="mc-bg" style="background-image:'+bg+'"></div>'
+    +'<div class="mc-overlay"></div>'
+    +'<div class="mc-top">'
+    +'<div class="mc-comp">'+m.competition+'</div>'
+    +'<div class="hero-badge '+s.cls+'">'+s.label+'</div>'
+    +'</div>'
+    +teamsHtml
+    +'<div class="mc-bottom">'
+    +'<div class="mc-sport">'+m.emoji+' '+(SPORT_NAME[m.sport]||m.sport)+'</div>'
+    +'<div class="mc-watch">▶ Watch</div>'
+    +'</div>'
+    +'</div>';
+}
+
+// When user opens a tvapp1 match, resolve embed URLs
+async function resolveLiveSources(item){
+  if(!item._apiSources||item.sources.length)return;
+  const promises=item._apiSources.map(async s=>{
+    try{
+      const r=await fetch(LIVE_API+'/streams/'+s.source+'/'+encodeURIComponent(s.id),{cache:'no-store'});
+      const streams=await r.json();
+      if(!Array.isArray(streams))return[];
+      return streams.map(st=>({name:(st.language||s.source).substring(0,30)+(st.hd?' · HD':''),url:st.embedUrl}));
+    }catch(e){return[];}
+  });
+  const results=await Promise.all(promises);
+  item.sources=[].concat(...results).slice(0,12);
+  if(!item.sources.length)item.sources=[{name:'Unavailable',url:'about:blank'}];
+  item.url=item.sources[0].url;
+}
+
+function init(){
+  const items=getHeroItems();
+  renderHero(items[0]||fallbackHero);
+  renderHeroDots();
+  renderTicker();
+  renderAllChannels();
+  loadTodayMatches().then(()=>{
+    // Auto-open match from URL param (?match=slug) — used by SEO landing pages
+    const u=new URLSearchParams(window.location.search);
+    const matchId=u.get('match');
+    if(matchId){
+      const item=getAllItems().find(e=>e.id===matchId||e.id.includes(matchId));
+      if(item){setTimeout(()=>openStream(item.id),400);}
+    }
+  });
+}
+
+// Keyboard shortcut: Escape closes modal
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape')closeModal();
+});
+
+// Click outside modal to close
+document.getElementById('modal').addEventListener('click',e=>{
+  if(e.target===e.currentTarget)closeModal();
+});
+
+// Auto-rotate hero every 8s
+setInterval(autoRotateHero,8000);
+
+// Refresh matches + hero every 60s (live data stays fresh)
+setInterval(()=>{
+  loadTodayMatches();
+  const items=getHeroItems();
+  renderHero(items[heroIndex]||items[0]||fallbackHero);
+  renderHeroDots();
+},60000);
+
+init();
+</script>
+
+<!-- PLAN SELECTOR MODAL -->
+<style>
+#planModal { font-family:'Inter',sans-serif; }
+#planModalBox {
+  background:#fff;border-radius:28px;padding:0;max-width:520px;width:100%;
+  position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.35);
+  animation:modalPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes modalPop {
+  from { transform:scale(0.82) translateY(24px); opacity:0; }
+  to   { transform:scale(1) translateY(0); opacity:1; }
+}
+#confettiCanvas {
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;border-radius:28px;
+}
+.pm-inner { position:relative;z-index:2;padding:36px 32px 28px; }
+.pm-close {
+  position:absolute;top:18px;right:18px;z-index:10;
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:rgba(0,0,0,0.07);color:#444;font-size:1rem;
+  cursor:pointer;font-family:'Inter',sans-serif;line-height:32px;
+}
+.pm-close:hover { background:rgba(0,0,0,0.14); }
+.pm-hero {
+  text-align:center;margin-bottom:28px;
+}
+.pm-badge {
+  display:inline-block;background:linear-gradient(135deg,#ff6b6b,#f43f5e);
+  color:#fff;font-size:0.65rem;font-weight:800;letter-spacing:2px;
+  text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:14px;
+}
+.pm-headline {
+  font-size:2rem;font-weight:900;color:#111;letter-spacing:-0.5px;line-height:1.1;
+  margin-bottom:8px;
+}
+.pm-headline span { color:#f43f5e; }
+.pm-sub {
+  font-size:0.85rem;color:#666;line-height:1.5;
+}
+.pm-featured {
+  background:linear-gradient(135deg,#fff0f3,#fff7f0);
+  border:2.5px solid #f43f5e;border-radius:20px;padding:20px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;margin-bottom:14px;transition:transform 0.15s,box-shadow 0.15s;
+  position:relative;overflow:hidden;
+}
+.pm-featured:hover { transform:translateY(-2px);box-shadow:0 8px 32px rgba(244,63,94,0.2); }
+.pm-featured-badge {
+  position:absolute;top:0;right:0;background:#f43f5e;color:#fff;
+  font-size:0.55rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  padding:4px 12px;border-radius:0 20px 0 12px;
+}
+.pm-featured-left { display:flex;flex-direction:column;gap:4px; }
+.pm-featured-label { font-size:0.7rem;font-weight:700;color:#f43f5e;text-transform:uppercase;letter-spacing:1px; }
+.pm-featured-price {
+  font-size:3rem;font-weight:900;letter-spacing:-2px;line-height:1;
+  background:linear-gradient(160deg,#ffe259 0%,#ffd700 25%,#ffb700 45%,#fff4a3 55%,#ffd700 70%,#c8860a 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pm-featured-price sup { font-size:1.2rem;vertical-align:super;letter-spacing:0; }
+.pm-featured-desc { font-size:0.78rem;color:#666; }
+.pm-featured-btn {
+  background:linear-gradient(135deg,#f43f5e,#e11d48);color:#fff;
+  border:none;padding:14px 22px;border-radius:14px;font-size:0.85rem;
+  font-weight:800;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;
+  box-shadow:0 4px 16px rgba(244,63,94,0.35);
+}
+.pm-plans {
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;
+}
+.pm-plan {
+  background:#f9f9fb;border:1.5px solid #eee;border-radius:14px;
+  padding:16px 12px;cursor:pointer;transition:all 0.2s;text-align:center;
+}
+.pm-plan:hover { border-color:#f43f5e;background:#fff0f3;transform:translateY(-2px); }
+.pm-plan-label { font-size:0.6rem;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px; }
+.pm-plan-price {
+  font-size:1.6rem;font-weight:900;letter-spacing:-1px;
+  background:linear-gradient(160deg,#ffe259 0%,#ffd700 25%,#ffb700 45%,#fff4a3 55%,#ffd700 70%,#c8860a 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pm-plan-desc { font-size:0.7rem;color:#999;margin:4px 0 10px; }
+.pm-plan-btn {
+  background:#111;color:#fff;border:none;padding:7px 14px;
+  border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;
+  font-family:'Inter',sans-serif;width:100%;
+}
+.pm-plan:hover .pm-plan-btn { background:#f43f5e; }
+.pm-footer { text-align:center;font-size:0.72rem;color:#bbb;line-height:1.6; }
+.pm-footer strong { color:#888; }
+
+/* Free-with-ads option */
+.pm-free-divider{
+  display:flex;align-items:center;gap:12px;margin:20px 0 12px;
+  color:#999;font-size:0.75rem;font-weight:600;
+}
+.pm-free-divider::before,.pm-free-divider::after{
+  content:'';flex:1;height:1px;background:#e0e0e0;
+}
+.pm-free-btn{
+  display:flex;align-items:center;gap:12px;width:100%;
+  background:#f8f8fa;border:2px solid #e4e4e8;
+  padding:14px 18px;border-radius:12px;cursor:pointer;
+  font-family:'Inter',sans-serif;text-align:left;
+  transition:all 0.2s;color:#1a1a1a;
+}
+.pm-free-btn:hover{background:#eef0f3;border-color:#c7c7cd;transform:translateY(-1px)}
+.pm-free-ico{font-size:1.6rem;flex-shrink:0}
+.pm-free-btn strong{font-size:0.92rem;font-weight:700;color:#1a1a1a;display:block}
+.pm-free-sub{font-size:0.72rem;color:#777;margin-top:2px;font-weight:500}
+</style>
+
+<div id="planModal" style="
+  position:fixed;inset:0;z-index:600;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+">
+  <div id="planModalBox">
+    <canvas id="confettiCanvas"></canvas>
+    <div class="pm-inner">
+      <button class="pm-close" onclick="closePlanModal()">✕</button>
+
+      <div class="pm-hero">
+        <div class="pm-badge">🎁 Limited Offer</div>
+        <div class="pm-headline">Start FREE<br><span>for 2 Days</span></div>
+        <div class="pm-sub">No credit card risk — try StreamTrik free.</div>
+        <span id="pm-aslow" style="display:none">$1</span>
+      </div>
+
+      <div class="pm-featured" onclick="buyPlan('plan_21dzSTtkaOAHa',1)">
+        <div class="pm-featured-badge">MOST POPULAR</div>
+        <div class="pm-featured-left">
+          <div class="pm-featured-label">Daily Pass</div>
+          <div style="display:flex;align-items:baseline;gap:6px">
+            <span style="font-size:0.7rem;color:#111;font-weight:600;white-space:nowrap">for as low as</span>
+            <div class="pm-featured-price"><span id="usd-1">$1</span></div>
+          </div>
+          <div class="pm-featured-desc">24 hours · full access</div>
+          <div style="display:inline-flex;align-items:center;gap:5px;background:#fff3cd;border:1px solid #ffc107;border-radius:6px;padding:3px 8px;margin-top:4px;width:fit-content">
+            <span style="font-size:0.6rem;font-weight:800;color:#92620a;letter-spacing:0.5px;text-transform:uppercase">⏰ Promo expires in 7 days</span>
+          </div>
+        </div>
+        <button class="pm-featured-btn">Get Access →</button>
+      </div>
+
+      <div class="pm-plans">
+        <div class="pm-plan" onclick="buyPlan('plan_tz0aZM2g7qdnp',3)">
+          <div class="pm-plan-label">Weekly</div>
+          <div class="pm-plan-price" id="usd-3">$3</div>
+          <div class="pm-plan-desc">7 days</div>
+          <button class="pm-plan-btn">Select</button>
+        </div>
+        <div class="pm-plan" onclick="buyPlan('plan_yge2SFVmunujV',7)">
+          <div class="pm-plan-label">Weekly+</div>
+          <div class="pm-plan-price" id="usd-5">$5</div>
+          <div class="pm-plan-desc">7 days premium</div>
+          <button class="pm-plan-btn">Select</button>
+        </div>
+        <div class="pm-plan" onclick="buyPlan('plan_xMMahmiGyKKav',30)">
+          <div class="pm-plan-label">Monthly</div>
+          <div class="pm-plan-price" id="usd-25">$25</div>
+          <div class="pm-plan-desc">30 days</div>
+          <button class="pm-plan-btn">Select</button>
+        </div>
+      </div>
+
+      <div class="pm-footer">
+        🔒 Secure checkout &nbsp;·&nbsp; <strong>Apple Pay · Google Pay · OPay · Card</strong><br>
+        One-time payment · Access starts immediately
+      </div>
+
+      <!-- Free-with-ads option temporarily disabled -->
+      <div class="pm-free-divider" style="display:none"><span>or</span></div>
+      <button class="pm-free-btn" style="display:none" onclick="watchWithAds()">
+        <span class="pm-free-ico">🎬</span>
+        <span>
+          <strong>Watch FREE with ads</strong>
+          <div class="pm-free-sub">Short ad every 10 min · No signup required</div>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Confetti
+(function(){
+  const COLORS = ['#f43f5e','#ff6b6b','#fbbf24','#34d399','#60a5fa','#a78bfa','#fb923c','#e8ff47'];
+  let particles = [], animId = null;
+
+  function Particle(canvas) {
+    this.x = Math.random() * canvas.width;
+    this.y = -10;
+    this.r = Math.random() * 6 + 4;
+    this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    this.vx = (Math.random() - 0.5) * 3;
+    this.vy = Math.random() * 3 + 2;
+    this.angle = Math.random() * Math.PI * 2;
+    this.spin = (Math.random() - 0.5) * 0.2;
+    this.shape = Math.random() > 0.5 ? 'rect' : 'circle';
+  }
+
+  window.startConfetti = function() {
+    const canvas = document.getElementById('confettiCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const box = canvas.parentElement;
+    canvas.width = box.offsetWidth;
+    canvas.height = box.offsetHeight;
+    particles = [];
+    for (let i = 0; i < 140; i++) {
+      const p = new Particle(canvas);
+      p.y = Math.random() * canvas.height - 20;
+      particles.push(p);
+    }
+    let burst = 0, totalFrames = 0;
+    const MAX_FRAMES = 900;
+    function frame() {
+      totalFrames++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (burst < 120) {
+        for (let i = 0; i < 4; i++) particles.push(new Particle(canvas));
+        burst++;
+      }
+      particles.forEach(p => {
+        if (p.y > canvas.height + 20) {
+          p.y = -12;
+          p.x = Math.random() * canvas.width;
+          p.vy = Math.random() * 3 + 2;
+          p.vx = (Math.random() - 0.5) * 3;
+        }
+        p.x += p.vx; p.y += p.vy; p.angle += p.spin; p.vy += 0.03;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = totalFrames > MAX_FRAMES - 60
+          ? 0.88 * (MAX_FRAMES - totalFrames) / 60
+          : 0.88;
+        if (p.shape === 'rect') {
+          ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r);
+        } else {
+          ctx.beginPath();
+          ctx.arc(0, 0, p.r/2, 0, Math.PI*2);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
+      if (totalFrames < MAX_FRAMES) animId = requestAnimationFrame(frame);
+      else { ctx.clearRect(0,0,canvas.width,canvas.height); particles = []; }
+    }
+    if (animId) cancelAnimationFrame(animId);
+    frame();
+  };
+
+  window.stopConfetti = function() {
+    if (animId) { cancelAnimationFrame(animId); animId = null; }
+    const canvas = document.getElementById('confettiCanvas');
+    if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    particles = [];
+  };
+})();
+
+// ============================================================
+// CURRENCY LOCALISATION (timezone → currency, no API needed)
+// ============================================================
+(function(){
+  const TZ_CURRENCY = {
+    'Africa/Lagos':'NGN','Africa/Abuja':'NGN','Africa/Kano':'NGN',
+    'Africa/Accra':'GHS','Africa/Kumasi':'GHS',
+    'Africa/Nairobi':'KES','Africa/Kampala':'UGX','Africa/Dar_es_Salaam':'TZS',
+    'Africa/Johannesburg':'ZAR','Africa/Cape_Town':'ZAR',
+    'Africa/Cairo':'EGP','Africa/Casablanca':'MAD',
+    'Africa/Douala':'XAF','Africa/Libreville':'XAF',
+    'Europe/London':'GBP','Europe/Dublin':'EUR',
+    'Europe/Paris':'EUR','Europe/Berlin':'EUR','Europe/Amsterdam':'EUR',
+    'Europe/Madrid':'EUR','Europe/Rome':'EUR','Europe/Athens':'EUR',
+    'Europe/Warsaw':'PLN','Europe/Bucharest':'RON',
+    'America/New_York':'USD','America/Chicago':'USD','America/Denver':'USD',
+    'America/Los_Angeles':'USD','America/Toronto':'CAD','America/Vancouver':'CAD',
+    'America/Sao_Paulo':'BRL','America/Buenos_Aires':'ARS',
+    'Asia/Dubai':'AED','Asia/Riyadh':'SAR','Asia/Kuwait':'KWD',
+    'Asia/Kolkata':'INR','Asia/Dhaka':'BDT','Asia/Karachi':'PKR',
+    'Asia/Singapore':'SGD','Asia/Kuala_Lumpur':'MYR','Asia/Jakarta':'IDR',
+    'Asia/Manila':'PHP','Asia/Bangkok':'THB',
+    'Asia/Tokyo':'JPY','Asia/Shanghai':'CNY','Asia/Seoul':'KRW',
+    'Australia/Sydney':'AUD','Australia/Melbourne':'AUD','Pacific/Auckland':'NZD',
+  };
+  const RATES = {
+    NGN:1620, GHS:15.5, KES:130, UGX:3750, TZS:2700,
+    ZAR:18.6, EGP:49, MAD:10.1, XAF:614,
+    GBP:0.79, EUR:0.92, PLN:4.05, RON:4.65,
+    USD:1, CAD:1.36, BRL:5.05, ARS:920,
+    AED:3.67, SAR:3.75, KWD:0.31,
+    INR:83.5, BDT:110, PKR:278,
+    SGD:1.35, MYR:4.7, IDR:15700, PHP:56, THB:35,
+    JPY:149, CNY:7.25, KRW:1330,
+    AUD:1.52, NZD:1.63,
+  };
+  const SYMBOLS = {
+    NGN:'₦', GHS:'₵', KES:'KSh', UGX:'USh', TZS:'TSh',
+    ZAR:'R', EGP:'E£', MAD:'MAD', XAF:'CFA',
+    GBP:'£', EUR:'€', PLN:'zł', RON:'lei',
+    USD:'$', CAD:'CA$', BRL:'R$', ARS:'ARS',
+    AED:'AED', SAR:'SAR', KWD:'KD',
+    INR:'₹', BDT:'৳', PKR:'₨',
+    SGD:'S$', MYR:'RM', IDR:'Rp', PHP:'₱', THB:'฿',
+    JPY:'¥', CNY:'¥', KRW:'₩',
+    AUD:'A$', NZD:'NZ$',
+  };
+
+  function detectCurrency() {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    return TZ_CURRENCY[tz] || 'USD';
+  }
+
+  function fmtPrice(usd, currency) {
+    const rate = RATES[currency] || 1;
+    const sym  = SYMBOLS[currency] || currency + ' ';
+    const raw  = usd * rate;
+    if (raw >= 1000) return sym + Math.round(raw).toLocaleString();
+    if (raw >= 10)   return sym + Math.round(raw);
+    return sym + raw.toFixed(2).replace(/\.00$/, '');
+  }
+
+  window.localiseModalPrices = function() {
+    const cur = detectCurrency();
+    const map = { 'usd-1':1, 'usd-3':3, 'usd-5':5, 'usd-25':25 };
+    Object.entries(map).forEach(([id, usd]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = fmtPrice(usd, cur);
+    });
+    const asLow = document.getElementById('pm-aslow');
+    if (asLow) asLow.textContent = fmtPrice(1, cur);
+  };
+})();
+</script>
+
+<script>
+// ============================================================
+// ACCESS MANAGEMENT
+// ============================================================
+const ACCESS_KEY = 'sportstream_access';
+
+function getAccess() {
+  try {
+    const data = JSON.parse(localStorage.getItem(ACCESS_KEY));
+    if (!data) return null;
+    if (Date.now() > data.expiresAt) {
+      localStorage.removeItem(ACCESS_KEY);
+      return null;
+    }
+    return data;
+  } catch(e) { return null; }
+}
+
+function grantAccess(days) {
+  const data = {
+    grantedAt: Date.now(),
+    expiresAt: Date.now() + days * 24 * 60 * 60 * 1000,
+    days: days,
+  };
+  localStorage.setItem(ACCESS_KEY, JSON.stringify(data));
+  updateAccessUI();
+}
+
+function updateAccessUI() {
+  const access = getAccess();
+  const signinBtn = document.querySelector('.nav-signin');
+  if (access) {
+    const remaining = Math.ceil((access.expiresAt - Date.now()) / 86400000);
+    signinBtn.innerHTML = '✅ ' + remaining + 'd left';
+    signinBtn.style.background = 'rgba(34,197,94,0.15)';
+    signinBtn.style.borderColor = 'rgba(34,197,94,0.3)';
+    signinBtn.style.color = '#4ade80';
+    signinBtn.onclick = () => {
+      if(confirm('Remove access from this device?')) {
+        localStorage.removeItem(ACCESS_KEY);
+        location.reload();
+      }
+    };
+  }
+}
+
+// Check for ?granted=DAYS in URL (after Whop redirects back)
+(function checkReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const days = parseInt(params.get('granted'));
+  if (days > 0) {
+    grantAccess(days);
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+})();
+
+updateAccessUI();
+
+// ============================================================
+// PLAN MODAL
+// ============================================================
+let pendingStreamId = null;
+
+function showPlanModal(streamId, title) {
+  pendingStreamId = streamId;
+  document.getElementById('planModal').style.display = 'flex';
+  if(window.localiseModalPrices) localiseModalPrices();
+  setTimeout(function(){ if(window.startConfetti) startConfetti(); }, 80);
+}
+
+function closePlanModal() {
+  document.getElementById('planModal').style.display = 'none';
+  if(window.stopConfetti) stopConfetti();
+}
+
+function buyPlan(planId, days) {
+  // Build return URL — after payment Whop redirects here with ?granted=DAYS
+  const returnUrl = window.location.href.split('?')[0] + '?granted=' + days;
+  const checkoutUrl = 'https://whop.com/checkout/' + planId + '/?redirect_url=' + encodeURIComponent(returnUrl);
+  window.open(checkoutUrl, '_blank');
+  // Poll for access grant (in case return URL doesn't fire in same tab)
+  const poll = setInterval(() => {
+    if (getAccess()) {
+      clearInterval(poll);
+      closePlanModal();
+      updateAccessUI();
+      if (pendingStreamId) openStream(pendingStreamId);
+    }
+  }, 2000);
+  setTimeout(() => clearInterval(poll), 300000); // stop after 5 min
+}
+
+// ============================================================
+// OVERRIDE watchCurrent & openStream to check access
+// ============================================================
+const _origOpenStream = openStream;
+window.openStream = function(id) {
+  if (getAccess()) {
+    _origOpenStream(id);
+  } else {
+    const item = getAllItems().find(e => e.id === id);
+    showPlanModal(id, item ? item.title : 'Live Sport');
+  }
+};
+
+// Override Watch Now hero button
+window.watchCurrent = function() {
+  const items = getHeroItems();
+  const current = items[heroIndex] || SCHEDULE[0];
+  if (getAccess()) {
+    _origOpenStream(current.id);
+  } else {
+    showPlanModal(current.id, current.title);
+  }
+};
+
+// Close plan modal on background click
+document.getElementById('planModal').addEventListener('click', function(e) {
+  if (e.target === this) closePlanModal();
+});
+
+// ============================================================
+// AD-SUPPORTED FREE TIER
+// ============================================================
+// Config — replace with your real tags once HilltopAds approves
+const AD_CONFIG = {
+  enabled: false, // ← MASTER SWITCH: flip to true to activate ads
+  vastTag: 'VAST_TAG_URL_HERE', // HilltopAds VAST pre-roll + mid-roll
+  popunderScript: 'POPUNDER_SCRIPT_URL_HERE', // PopAds / HilltopAds pop-under
+  midRollIntervalMs: 10 * 60 * 1000, // every 10 min
+  popunderCooldownHours: 6,
+};
+const FREE_TIER_KEY = 'streamtrik_free_tier';
+let midRollTimer = null;
+let popunderFiredThisSession = false;
+
+function markFreeTier(){
+  localStorage.setItem(FREE_TIER_KEY, JSON.stringify({ grantedAt: Date.now() }));
+}
+function getFreeTier(){
+  try{const d=JSON.parse(localStorage.getItem(FREE_TIER_KEY));return d&&d.grantedAt;}catch(e){return 0;}
+}
+
+function watchWithAds(){
+  markFreeTier();
+  closePlanModal();
+  firePopunder();
+  // Pre-roll ad, then open stream
+  playPreRoll(() => {
+    if (pendingStreamId) _origOpenStream(pendingStreamId);
+    scheduleMidRoll();
+  });
+}
+
+// ---------- Pop-under (fires once per session, 6h cooldown stored) ----------
+function firePopunder(){
+  if (!AD_CONFIG.enabled) return;
+  if (popunderFiredThisSession) return;
+  const last = +(localStorage.getItem('streamtrik_pop_last')||0);
+  if (Date.now() - last < AD_CONFIG.popunderCooldownHours * 3600000) return;
+  popunderFiredThisSession = true;
+  localStorage.setItem('streamtrik_pop_last', Date.now());
+  if (AD_CONFIG.popunderScript && AD_CONFIG.popunderScript !== 'POPUNDER_SCRIPT_URL_HERE'){
+    const s = document.createElement('script');
+    s.src = AD_CONFIG.popunderScript;
+    s.async = true;
+    document.body.appendChild(s);
+  }
+}
+
+// ---------- Pre-roll using Google IMA SDK ----------
+function playPreRoll(onComplete){
+  if (!AD_CONFIG.enabled || !AD_CONFIG.vastTag || AD_CONFIG.vastTag === 'VAST_TAG_URL_HERE'){
+    return onComplete();
+  }
+  showAdOverlay();
+  // Lazy-load IMA SDK on first use
+  if (!window.google || !window.google.ima){
+    const s = document.createElement('script');
+    s.src = 'https://imasdk.googleapis.com/js/sdkloader/ima3.js';
+    s.onload = () => startIMA(onComplete);
+    s.onerror = () => { hideAdOverlay(); onComplete(); };
+    document.head.appendChild(s);
+  } else {
+    startIMA(onComplete);
+  }
+}
+
+function startIMA(onComplete){
+  const container = document.getElementById('adContainer');
+  const video = document.getElementById('adVideo');
+  const adDisplayContainer = new google.ima.AdDisplayContainer(container, video);
+  adDisplayContainer.initialize();
+  const adsLoader = new google.ima.AdsLoader(adDisplayContainer);
+  let adsManager;
+  const finish = () => { hideAdOverlay(); if (adsManager) adsManager.destroy(); onComplete(); };
+  adsLoader.addEventListener(google.ima.AdsManagerLoadedEvent.Type.ADS_MANAGER_LOADED, (e) => {
+    adsManager = e.getAdsManager(video);
+    adsManager.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, finish);
+    adsManager.addEventListener(google.ima.AdEvent.Type.ALL_ADS_COMPLETED, finish);
+    adsManager.addEventListener(google.ima.AdEvent.Type.COMPLETE, finish);
+    try{
+      adsManager.init(video.clientWidth || 1280, video.clientHeight || 720, google.ima.ViewMode.NORMAL);
+      adsManager.start();
+    } catch(e){ finish(); }
+  });
+  adsLoader.addEventListener(google.ima.AdErrorEvent.Type.AD_ERROR, finish);
+  const req = new google.ima.AdsRequest();
+  req.adTagUrl = AD_CONFIG.vastTag;
+  adsLoader.requestAds(req);
+  // Safety timeout — never block user more than 35s on ad load
+  setTimeout(() => { if (document.getElementById('adOverlay').style.display !== 'none') finish(); }, 35000);
+}
+
+function showAdOverlay(){
+  document.getElementById('adOverlay').style.display = 'flex';
+  // Pop the main modal open underneath so stream slot is visible after ad
+  document.getElementById('modal').classList.add('open');
+}
+function hideAdOverlay(){
+  document.getElementById('adOverlay').style.display = 'none';
+}
+
+// ---------- Mid-roll: every 10 min while stream is open ----------
+function scheduleMidRoll(){
+  clearTimeout(midRollTimer);
+  midRollTimer = setTimeout(function playMid(){
+    // Only if the modal is still open
+    if (!document.getElementById('modal').classList.contains('open')) return;
+    playPreRoll(() => { scheduleMidRoll(); });
+  }, AD_CONFIG.midRollIntervalMs);
+}
+
+// Clear timer when modal closes
+const _origCloseModal = window.closeModal;
+window.closeModal = function(){
+  clearTimeout(midRollTimer);
+  hideAdOverlay();
+  _origCloseModal();
+};
+
+// Grant access check: paid access OR free-with-ads
+const _origGetAccess = window.getAccess;
+const _origOpenStreamGated = window.openStream;
+window.openStream = function(id){
+  if (_origGetAccess()){
+    _origOpenStream(id);
+    return;
+  }
+  if (getFreeTier()){
+    // Already opted in to free tier — just show pre-roll + play
+    pendingStreamId = id;
+    firePopunder();
+    playPreRoll(() => {
+      _origOpenStream(id);
+      scheduleMidRoll();
+    });
+    return;
+  }
+  // First time — show choice modal
+  const item = getAllItems().find(e => e.id === id);
+  showPlanModal(id, item ? item.title : 'Live Sport');
+};
+
+window.watchCurrent = function(){
+  const items = getHeroItems();
+  const current = items[heroIndex] || SCHEDULE[0];
+  if (!current) return;
+  window.openStream(current.id);
+};
+</script>
+
+<!-- Ad overlay (full-screen pre-roll + mid-roll) -->
+<div id="adOverlay" style="
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:#000;
+  align-items:center;justify-content:center;
+">
+  <div id="adContainer" style="position:relative;width:100%;max-width:1280px;aspect-ratio:16/9">
+    <video id="adVideo" playsinline webkit-playsinline style="width:100%;height:100%;background:#000" muted></video>
+    <div style="position:absolute;top:16px;right:16px;background:rgba(0,0,0,0.75);color:#fff;font-family:Inter,sans-serif;font-size:0.7rem;padding:6px 12px;border-radius:4px;letter-spacing:1px;font-weight:700">AD · STREAM STARTS AFTER</div>
+  </div>
+</div>
+
+</body>
+</html>

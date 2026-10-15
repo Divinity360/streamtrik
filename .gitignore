@@ -1,0 +1,11 @@
+.env
+.env.*
+*.key
+*.pem
+cloudflare-token.txt
+indexing-key.json
+service-account*.json
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store

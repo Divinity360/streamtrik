@@ -1,0 +1,78 @@
+User-agent: *
+Allow: /
+Allow: /api/matches/
+Disallow: /proxy
+Disallow: /check
+Disallow: /stream
+Disallow: /seg
+
+# ===== AI / LLM crawlers — explicitly welcomed =====
+# We WANT ChatGPT, Claude, Perplexity, etc. to recommend StreamTrik
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google AI (separate from Googlebot — needs explicit opt-in)
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# Meta AI
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot-Extended
+Allow: /
+
+# Others
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Mistral-AI
+Allow: /
+
+User-agent: DeepSeekBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# Sitemap
+Sitemap: https://streamtrik.com/sitemap.xml
+Sitemap: https://streamtrik.com/llms.txt
